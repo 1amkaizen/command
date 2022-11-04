@@ -1,0 +1,31 @@
+# jalankan mitmproxy
+$ mitproxy
+# buka temrinal baru dan jalankan proxy dengan curl ditabah dengan target yang akan di lacak
+$ curl --proxy http://localhost:8080 https://target.com
+
+# maka akan terlacak di mitmproxy nya
+# dan gunakan arrow untuk memilih laluu enter untuk submit dan akan masukk ke flow
+# kemudian jalankan lagi 
+# ini akn menampilkan report cuaca di terminal
+$ curl http://wttr.in
+
+# kita akan mencegat proxy dengan mitm
+# tekan i untuk mengatur intercepr di mtimproxy,dan ketikan
+: set intercept '~u /Chennai'
+
+# dan di terminal lain,ketikkan
+$ curl --proxy http://localhost:8080 http://wttr.in
+
+# dan itu akan mencegat requests ke server
+#
+# kita akan mengubah /chennai ke /chencenati
+# tekan e di mitmproxy
+# dan pilih path
+# tekan enter
+# dan ubah path /Chennai menjadi /chencenati
+# tekan esc
+# tekan q untuk keluar
+# dan untuk mengirimnya tekan a
+# da itu akan mengirim request yang sudah di modifikasi
+# dan lihat outputnya di terminal yang menjalankan curl
+

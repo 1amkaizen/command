@@ -1,0 +1,5 @@
+$ wapiti -u http://sites.vulns.pentestit.ru/ -m sql,xss,xxe
+$ wapiti-getcookie -u http://sites.vulns.pentestit.ru/login.php -c cookie.json
+$ wapiti-getcookie - http://sites.vulns.pentestit.ru/login.php -c cookie.json -d "username=admin&password=admin&enter=submit"
+$ wapiti --level 1 -u http://sites.vulns.pentestit.ru/ -f html -o /tmp/vulns.html -m all --color -с cookie.json --scope folder --flush-session -A 'Pentestit Scans' -p http://myproxy:3128
+$ wapiti -u http://mysite.com -n 10 -b folder -u -v 1 -f html -o /tmp/scan_report

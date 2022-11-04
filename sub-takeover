@@ -1,0 +1,9 @@
+For easy my method is by
+
+Enumerating all the subdomains using massdns, amass, sublist3r, certspotter.com, crtsh etc.
+Combine all the subdomains found using above tools
+Find live subdomains using httprobe from the list of all subdomains
+Then I use nuclei by project discovery which is an awesome tool by
+cat livesubdomains.txt | nuclei -v -o output.txt -t /nuclei-templates-directory/subdomain-takeover
+That’s all it will find you mostly the takeoverable websites if any.
+The bug is P2 if the subdomain is an important one and P3 for other subdomains. So don’t feel bad to find that it’s simple but hard to get one. and if you are lucky and work hard on various domains you might get it all the best buddy

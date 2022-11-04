@@ -1,0 +1,72 @@
+## SMB Script
+$ nmap -sV smb-brute.nse                 192.168.43.134
+$ nmap -sV smb-double-pulsar-backdoor.nse 192.168.43.134
+$ nmap -sV smb-enum-domains.nse          192.168.43.134
+$ nmap -sV smb-enum-groups.nse           192.168.43.134
+$ nmap -sV smb-enum-processes.nse        192.168.43.134
+$ nmap -sV smb-enum-services.nse         192.168.43.134
+$ nmap -sV smb-enum-sessions.nse         192.168.43.134
+$ nmap -sV smb-enum-shares.nse           192.168.43.134
+$ nmap -sV smb-enum-users.nse            192.168.43.134
+$ nmap -sV smb-flood.nse                 192.168.43.134
+$ nmap -sV smb-ls.nse                    192.168.43.134
+$ nmap -sV smb-mbenum.nse                192.168.43.134
+$ nmap -sV smb-os-discovery.nse          192.168.43.134
+$ nmap -sV smb-print-text.nse            192.168.43.134
+$ nmap -sV smb-protocols.nse             192.168.43.134
+$ nmap -sV smb-psexec.nse                192.168.43.134
+$ nmap -sV smb-security-mode.nse         192.168.43.134
+$ nmap -sV smb-server-stats.nse          192.168.43.134
+$ nmap -sV smb-system-info.nse           192.168.43.134
+$ nmap -sV smb-vuln-conficker.nse        192.168.43.134
+$ nmap -sV smb-vuln-cve-2017-7494.nse    192.168.43.134
+$ nmap -sV smb-vuln-cve2009-3103.nse     192.168.43.134
+$ nmap -sV smb-vuln-ms06-025.nse         192.168.43.134
+$ nmap -sV smb-vuln-ms07-029.nse         192.168.43.134
+$ nmap -sV smb-vuln-ms08-067.nse         192.168.43.134
+$ nmap -sV smb-vuln-ms10-054.nse         192.168.43.134
+$ nmap -sV smb-vuln-ms10-061.nse         192.168.43.134
+$ nmap -sV smb-vuln-ms17-010.nse         192.168.43.134
+$ nmap -sV smb-vuln-regsvc-dos.nse       192.168.43.134
+$ nmap -sV smb-vuln-webexec.nse          192.168.43.134
+$ nmap -sV smb-webexec-exploit.nse       192.168.43.134
+$ nmap -sV smb2-capabilities.nse         192.168.43.134
+$ nmap -sV smb2-security-mode.nse        192.168.43.134
+$ nmap -sV smb2-time.nse                 192.168.43.134
+$ nmap -sV smb2-vuln-uptime.nse          192.168.43.134
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,13 @@
+## MSSQL Script
+$ sudo nmap -sV ms-sql-brute.nse         192.168.43.134
+$ sudo nmap -sV ms-sql-config.nse        192.168.43.134
+$ sudo nmap -sV ms-sql-dac.nse           192.168.43.134
+$ sudo nmap -sV ms-sql-dump-hashes.nse   192.168.43.134
+$ sudo nmap -sV ms-sql-empty-password.nse192.168.43.134
+$ sudo nmap -sV ms-sql-hasdbaccess.nse   192.168.43.134
+$ sudo nmap -sV ms-sql-info.nse          192.168.43.134
+$ sudo nmap -sV ms-sql-ntlm-info.nse     192.168.43.134
+$ sudo nmap -sV ms-sql-query.nse         192.168.43.134
+$ sudo nmap -sV ms-sql-tables.nse        192.168.43.134
+$ sudo nmap -sV ms-sql-xp-cmdshell.nse   192.168.43.134
+

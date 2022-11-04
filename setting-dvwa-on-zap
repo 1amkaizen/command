@@ -1,0 +1,192 @@
+### Menyiapkan ZAP untuk Menguji Aplikasi Web yang Rentan (DVWA)
+## Berikut langkah-langkah yang digunakan untuk spider/scan DVWA v1.9 http://localhost/DVWA menggunakan ZAP 2.4.3:
+
+## Buat skrip JavaScript/ECMAScript otentikasi baru [1] dan ganti/atur konten skrip dengan yang berikut:
+
+function authenticate(helper, paramsValues, credentials) {
+    var loginUrl = paramsValues.get("Login URL");
+    var csrfTokenName = paramsValues.get("CSRF Field");
+    var csrfTokenValue = extractInputFieldValue(getPageContent(helper, loginUrl), csrfTokenName);
+    var postData = paramsValues.get("POST Data");
+
+    postData = postData.replace('{%username%}', encodeURIComponent(credentials.getParam("Username")));
+    postData = postData.replace('{%password%}', encodeURIComponent(credentials.getParam("Password")));
+    postData = postData.replace('{%' + csrfTokenName + '%}', encodeURIComponent(csrfTokenValue));
+
+    var msg = sendAndReceive(helper, loginUrl, postData);
+    return msg;
+}
+
+function getRequiredParamsNames() {
+    return [ "Login URL", "CSRF Field", "POST Data" ];
+}
+
+function getOptionalParamsNames() {
+    return [];
+}
+
+function getCredentialsParamsNames() {
+    return [ "Username", "Password" ];
+}
+
+function getPageContent(helper, url) {
+    var msg = sendAndReceive(helper, url);
+    return msg.getResponseBody().toString();
+}
+
+function sendAndReceive(helper, url, postData) {
+    var msg = helper.prepareMessage();
+
+    var method = "GET";
+    if (postData) {
+        method = "POST";
+        msg.setRequestBody(postData);
+    }
+
+    var requestUri = new org.apache.commons.httpclient.URI(url, true);
+    var requestHeader = new org.parosproxy.paros.network.HttpRequestHeader(method, requestUri, "HTTP/1.0");
+    msg.setRequestHeader(requestHeader);
+
+    helper.sendAndReceive(msg);
+
+    return msg;
+}
+
+function extractInputFieldValue(page, fieldName) {
+    // Rhino:
+    var src = new net.htmlparser.jericho.Source(page);
+    // Nashorn:
+    // var Source = Java.type("net.htmlparser.jericho.Source");
+    // var src = new Source(page);
+
+    var it = src.getAllElements('input').iterator();
+
+    while (it.hasNext()) {
+        var element = it.next();
+        if (element.getAttributeValue('name') == fieldName) {
+            return element.getAttributeValue('value');
+        }
+    }
+    return '';
+}
+
+## Buat konteks "DVWA" (atau edit "Konteks Default"):
+
+Nama Konteks:DVWAv1.9
+
+## Di panel "Include In Contexts" tambahkan:
+\Qhttp://localhost/DVWA\E.*
+
+## Di panel "Exclude In Contexts" tambahkan:
+
+\Qhttp://localhost/DVWA/login.php\E 
+\Qhttp://localhost/DVWA/logout.php\E 
+\Qhttp://localhost/DVWA/setup.php\E
+
+## Di panel “Authentication”, 
+pilih “Script-Based Authentication” [3], 
+pilih skrip otentikasi “DVWA”, 
+load dan isi kolom: 
+URL Login: http://localhost/DVWA/login.php 
+CSRF Field: user_token 
+POST Data: username={%username%}&password={%password%}&Login=Login&user_token={%user_token%} 
+Masuk: \Q<a href="logout.php">Logout</a>\E
+Keluar:(?:Location: [./]*login\.php)|(?:\Q<form action="login.php" method="post">\E)
+
+## Di panel "Users", 
+tambahkan pengguna: 
+Username : Username
+Administrator : admin 
+Password :password
+Tutup dialog.
+
+## Verifikasi otentikasi berfungsi, buat benih untuk spider dan konfigurasikan DVWA:
+
+Aktifkan "Force User Mode" [4] dan akses halaman utama (misalnya "http://localhost/DVWA") saat melakukan proxy melalui ZAP, cookie harus dinonaktifkan di browser; Itu harus menunjukkan halaman utama sehingga otentikasi berfungsi dan laba-laba memiliki benih;
+Akses “http://localhost/DVWA/security.php” dan ubah “Security Level” menjadi “low”;
+Nonaktifkan "Force User Mode" (tidak lagi diperlukan).
+Kecualikan dari konteks URL berikut, untuk mencegah laba-laba mengubah "Tingkat Keamanan" dan kata sandi: \Qhttp://localhost/DVWA/security.php\E \Qhttp://localhost/DVWA/vulnerabilities/csrf\E.*
+Dengan pengaturan konteks dan otentikasi, dimungkinkan untuk spider/scan sebagai pengguna.
+
+## Spidder:
+
+Pilih tab "Spider" dan klik tombol "New Scan";
+Klik “Select…”, 
+pilih konteksnya (misalnya “DVWAv1.9”) dan klik OK;
+Pilih User "Administrator" dan klik "Start Scan";
+Spider harus mulai dan spider sebagai pengguna "Administrator". 
+Spider dapat dijalankan untuk kedua kalinya untuk memastikan bahwa semua URL ditemukan.
+
+## Active scan:
+
+Pilih tab "Active Scan" dan klik tombol "New Scan";
+Klik “Select…”, pilih konteksnya (misalnya “DVWAv1.9”) dan klik OK;
+Pilih User "Administrator" dan klik "Start Scan";
+Pemindai aktif harus memulai dan memindai sebagai "Administrator" pengguna.
+Pemindai aktif harus menemukan beberapa masalah:
+
+Skrip Lintas Situs (Persisten) (4)
+Skrip Lintas Situs (Tercermin) (6)
+Lintasan Jalur
+Injeksi Perintah OS Jarak Jauh
+Injeksi SQL - MySQL
+Injeksi SQL (2)
+Penjelajahan Direktori (7)
+kabur:
+
+Jika Anda menangani tantangan fuzzing di DVWA dan perlu menangani token CSRF, detail berikut mungkin bisa membantu:
+
+Script bekerja dengan mesin skrip Nashorn (Java 8), jika Anda menggunakan Java 7 perlu beberapa perubahan (perubahan disebutkan dalam skrip asli).
+Konstanta yang ditentukan di awal file mungkin perlu diubah (mis. SOURCE_URL agar sesuai dengan server/aplikasi web target).
+Script mengasumsikan bahwa pesan yang di-fuzzed memiliki sesi DVWA yang valid.
+
+var SOURCE_URL = "http://localhost/DVWA/vulnerabilities/brute/";
+var CSRF_TOKEN_NAME = "user_token";
+var REQUEST_URI = new org.apache.commons.httpclient.URI(SOURCE_URL, true);
+
+function processMessage(utils, message) {
+    var msg = message.cloneRequest();
+    msg.getRequestHeader().setURI(REQUEST_URI);
+    var csrfTokenValue = extractInputFieldValue(getPageContent(utils, msg), CSRF_TOKEN_NAME);
+
+    var params = message.getUrlParams();
+    replace(params, CSRF_TOKEN_NAME, encodeURIComponent(csrfTokenValue));
+    message.getRequestHeader().setGetParams(params);
+}
+
+function processResult(utils, fuzzResult){
+    return true;
+}
+
+function getPageContent(utils, msg) {
+    utils.sendMessage(msg);
+    utils.addMessageToResults("Refresh " + CSRF_TOKEN_NAME, msg)
+    return msg.getResponseBody().toString();
+}
+
+function extractInputFieldValue(page, fieldName) {
+    var Source = Java.type("net.htmlparser.jericho.Source");
+    var src = new Source(page);
+
+    var it = src.getAllElements('input').iterator();
+
+    while (it.hasNext()) {
+        var element = it.next();
+        if (element.getAttributeValue('name') == fieldName) {
+            return element.getAttributeValue('value');
+        }
+    }
+    return '';
+}
+
+function replace(params, name, value) {
+    var it = params.iterator();
+
+    while (it.hasNext()) {
+        var param = it.next();
+        if (param.getName() == name) {
+            param.setValue(value);
+            return;
+        }
+    }
+}

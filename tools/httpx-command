@@ -1,0 +1,19 @@
+# URL Probe
+# Ini akan menjalankan alat terhadap semua host dan subdomain di hosts.txtdan mengembalikan URL yang menjalankan server web HTTP.
+$ cat hosts.txt | httpx 
+
+# CIDR Input
+$ echo 173.0.84.0/24 | httpx -silent
+# Tool Chain
+$ subfinder -d hackerone.com -silent| httpx -title -tech-detect -status-code
+
+# Favicon Hash
+$ subfinder -d hackerone.com -silent | httpx -favicon
+# JARM Fingerprint
+$ subfinder -d hackerone.com -silent | httpx -jarm
+# ASN Fingerprint
+$ subfinder -d hackerone.com -silent | httpx -asn
+# File/Path Bruteforce
+$ httpx -l urls.txt -path /v1/api -sc
+# Docker Run
+$ cat sub_domains.txt | docker run -i projectdiscovery/httpx

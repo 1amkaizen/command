@@ -1,0 +1,10 @@
+## FTP Script
+$ sudo nmap -sV ftp-anon.nse              192.18.43.134
+$ sudo nmap -sV ftp-bounce.nse            192.18.43.134
+$ sudo nmap -sV ftp-brute.nse             192.18.43.134
+$ sudo nmap -sV ftp-libopie.nse           192.18.43.134
+$ sudo nmap -sV ftp-proftpd-backdoor.nse  192.18.43.134
+$ sudo nmap -sV ftp-syst.nse              192.18.43.134
+$ sudo nmap -sV ftp-vsftpd-backdoor.nse   192.18.43.134
+$ sudo nmap -sV ftp-vuln-cve2010-4221.nse 192.18.43.134
+

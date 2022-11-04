@@ -1,0 +1,78 @@
+# perintah google dork
+site:
+inurl:
+intitle
+intext:
+filetype:
+
+# contoh
+# untuk mencari file logs for credentials yang ada text username nya
+allintext:username filetype:log
+#  Webcamas are super safe right - - Naaaah!
+ intitle:"webcamxp 5"
+# cari parameter
+inurl:index.php?id=
+# Vulnerable web servers
+inurl: / proc / self / cwd
+# Open FTP servers
+intitle: »index of» inurl: ftp
+#SSH private keys
+intitle: index.of id_rsa -id_rsa.pub
+filetype: log username putty
+# Email lists
+filetype: xls inurl: »email.xls»
+site: .edu filetype: xls inurl: »email.xls»
+# Live cameras
+inurl: top.htm inurl: currenttime
+intitle: »webcamXP 5 ″
+inurl: »lvappl.htm»
+
+List
+inurl:example.com intitle:"index of"
+inurl:example.com intitle:"index of /" "*key.pem"
+inurl:example.com ext:log
+inurl:example.com intitle:"index of" ext:sql|xls|xml|json|csv
+inurl:example.com "MYSQL_ROOT_PASSWORD:" ext:env OR ext:yml -git
+inurl:example.com intitle:"index of" "config.db"
+inurl:example.com allintext:"API_SECRET*" ext:env | ext:yml
+inurl:example.com intext:admin ext:sql inurl:admin
+inurl:example.com allintext:username,password filetype:log site:example.com "-----BEGIN RSA PRIVATE KEY-----" - inurl:id_rsa
+site:codepad.co "keyword"
+site:scribd.com "keyword"
+site:npmjs.com "keyword"
+site:npm-runkit.com "keyword"
+site:libraries.io "keyword"
+site:ycombinator.io "keyword"
+site:coggle.it "keyword"
+site:papaly.com "keyword"
+site:google.com "keyword"
+site:trello.com "keyword"
+site:prezi.com "keyword"
+site:jsdelivr.net "keyword"
+site:codepen.io "keyword"
+site:codeshare.io "keyword"
+site:sharecode.io "keyword"
+site:pastebin.com "keyword"
+site:repl.it "keyword"
+site:productforums.google.com "keyword"
+site:gitter.im "keyword"
+site:bitbucket.org "keyword"
+site:*atlassian.net "keyword"
+inurl:gitlab "keyword"
+inurl:github "keyword"
+
+
+
+inurl:.gov not for distribution | confidential | “employee only” | proprietary | top secret | classified | trade secret | internal | private | WS_FTP | ws_ftp | log | LOG filetype:log
+
+inurl:.gov not for distribution | confidential | “employee only” | proprietary | top secret | classified | trade secret | internal | private filetype:xls
+
+inurl:.gov not for distribution | confidential | “employee only” | proprietary | top secret | classified | trade secret | internal | private filetype:csv
+
+inurl:.gov not for distribution | confidential | “employee only” | proprietary | top secret | classified | trade secret | internal | private filetype:doc
+
+inurl:.gov not for distribution | confidential | “employee only” | proprietary | top secret | classified | trade secret | internal | private filetype:txt
+
+
+moleas
+p3S76PVs46

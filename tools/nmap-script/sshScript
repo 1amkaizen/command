@@ -1,0 +1,8 @@
+## ssh script
+$ sudo nmp -sV --script ssh-auth-methods.nse 196.168.43.134
+$ sudo nmp -sV --script ssh-brute.nse 196.168.43.134
+$ sudo nmp -sV --script ssh-hostkey.nse 196.168.43.134
+$ sudo nmp -sV --script ssh-publickey-acceptance.nse  196.168.43.134
+$ sudo nmp -sV --script ssh-run.nse  196.168.43.134
+$ sudo nmp -sV --script ssh2-enum-algos.nse  196.168.43.134
+$ sudo nmp -sV --script sshv1.nse  196.168.43.134

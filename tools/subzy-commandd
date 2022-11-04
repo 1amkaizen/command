@@ -1,0 +1,5 @@
+# subdomain takeover with subzy
+# miltiple target
+$ subzy -targets wilcards
+# single target 
+$ subzy -target sub.domain.com

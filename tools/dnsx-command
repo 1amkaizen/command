@@ -1,0 +1,76 @@
+			# DNS RESOLVING
+
+# Filter nama host aktif dari daftar subdomain pasif, diperoleh dari berbagai sumber:
+$ subfinder -silent -d hackerone.com | dnsx -silent
+# Cetak catatan A untuk daftar subdomain yang diberikan:
+$ subfinder -silent -d hackerone.com | dnsx -silent -a -resp
+# Ekstrak catatan A untuk daftar subdomain yang diberikan:
+$ subfinder -silent -d hackerone.com | dnsx -silent -a -resp-only
+# Ekstrak data CNAME untuk daftar subdomain yang diberikan:
+$ subfinder -silent -d hackerone.com | dnsx -silent -cname -resp
+# Selidiki menggunakan kode status dns pada daftar (sub) domain yang diberikan:
+$ subfinder -silent -d hackerone.com | dnsx -silent -rcode noerror,servfail,refused
+# Ekstrak subdomain dari rentang jaringan tertentu menggunakan PTRkueri:
+$ echo 173.0.84.0/24 | dnsx -silent -resp-only -ptr
+
+		# DNS Bruteforce
+
+# Subdomain bruteforce untuk domain tertentu atau daftar domain yang menggunakan d dan w menandai:
+$ dnsx -silent -d facebook.com -w dns_worldlist.txt
+# Subdomain yang ditargetkan Bruteforce menggunakan input kata kunci tunggal atau ganda, sebagai datau wflag mendukung input kata kunci yang dipisahkan koma atau file:
+$ dnsx -silent -d domains.txt -w jira,grafana,jenkins
+# Nilai diterima dari stdin untuk semua tipe input ( -list, -domain, -wordlist). Bendera -listdefault ke stdin, tetapi hal yang sama dapat dicapai untuk jenis input lainnya dengan menambahkan -(tanda hubung) sebagai parameter:
+$ cat domains.txt | dnsx -silent -w jira,grafana,jenkins -d -
+
+		# Wildcard filtering
+# Fitur khusus dari dnsxadalah kemampuannya untuk menangani wildcard berbasis DNS multi-level , dan melakukannya dengan jumlah permintaan DNS yang sangat berkurang
+# Terkadang semua subdomain akan teratasi, yang menghasilkan banyak sampah di output. Cara dnsxmenanganinya adalah dengan melacak berapa banyak subdomain yang mengarah ke IP dan jika jumlah subdomain meningkat melampaui ambang batas tertentu, ia akan memeriksa wildcard di semua level host untuk IP itu secara iteratif
+$ dnsx -l subdomain_list.txt -wd airbnb.com -o output.txt
+
+		# Dnsx as a library
+# Dimungkinkan untuk menggunakan perpustakaan secara langsung di program golang Anda. Cuplikan kode berikut adalah contoh penggunaan dalam program golang. Silakan merujuk ke sini untuk konfigurasi dan penggunaan paket yang terperinci.
+
+
+package main
+
+import (
+	"fmt"
+
+	"github.com/projectdiscovery/dnsx/libs/dnsx"
+)
+
+func main() {
+	// Create DNS Resolver with default options
+	dnsClient, err := dnsx.New(dnsx.DefaultOptions)
+	if err != nil {
+		fmt.Printf("err: %v\n", err)
+		return
+	}
+
+	// DNS A question and returns corresponding IPs
+	result, err := dnsClient.Lookup("hackerone.com")
+	if err != nil {
+		fmt.Printf("err: %v\n", err)
+		return
+	}
+	for idx, msg := range result {
+		fmt.Printf("%d: %s\n", idx+1, msg)
+	}
+
+	// Query
+	rawResp, err := dnsClient.QueryOne("hackerone.com")
+	if err != nil {
+		fmt.Printf("err: %v\n", err)
+		return
+	}
+	fmt.Printf("rawResp: %v\n", rawResp)
+
+	jsonStr, err := rawResp.JSON()
+	if err != nil {
+		fmt.Printf("err: %v\n", err)
+		return
+	}
+	fmt.Println(jsonStr)
+
+	return
+}

@@ -1,0 +1,13 @@
+## MYSQL Script
+$ sudo nmap -sV mysql-audit.nse            192.18.43.134
+$ sudo nmap -sV mysql-brute.nse            192.18.43.134
+$ sudo nmap -sV mysql-databases.nse        192.18.43.134
+$ sudo nmap -sV mysql-dump-hashes.nse      192.18.43.134
+$ sudo nmap -sV mysql-empty-password.nse   192.18.43.134
+$ sudo nmap -sV mysql-enum.nse             192.18.43.134
+$ sudo nmap -sV mysql-info.nse             192.18.43.134
+$ sudo nmap -sV mysql-query.nse            192.18.43.134
+$ sudo nmap -sV mysql-users.nse            192.18.43.134
+$ sudo nmap -sV mysql-variables.nse        192.18.43.134
+$ sudo nmap -sV mysql-vuln-cve2012-2122.nse 192.18.43.134
+

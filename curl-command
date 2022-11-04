@@ -1,0 +1,69 @@
+# intruder
+$ curl --request POST \
+     --url https://api.intruder.io/v1/targets/ \
+     --header 'Authorization: hackerone.com' \
+     --header 'accept: application/json' \
+     --header 'content-type: application/json' \
+     --data '
+{
+     "address": "string",
+     "tags": [
+          "string"
+     ]
+}
+'
+
+
+# dvwa header
+$ curl 'http://dvwa.com/vulnerabilities/xss_r/' \
+  -H 'Connection: keep-alive' \
+  -H 'Upgrade-Insecure-Requests: 1' \
+  -H 'User-Agent: Mozilla/5.0 (X11; Linux armv7l) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36' \
+  -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9' \
+  -H 'Referer: http://dvwa.com/index.php' \
+  -H 'Accept-Language: en-US,en;q=0.9,id;q=0.8' \
+  -H 'Cookie: PHPSESSID=bpj4ijd59mnepeuu59i2247c81; security=low' \
+  --compressed \
+  --insecure
+
+
+# header login 
+$ curl 'http://dvwa.com/vulnerabilities/brute/?username=admin&password=password&Login=Login' \
+  -H 'Connection: keep-alive' \i
+  -H 'Upgrade-Insecure-Requests: 1' \
+  -H 'User-Agent: Mozilla/5.0 (X11; Linux armv7l) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36' \
+  -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9' \
+  -H 'Referer: http://dvwa.com/vulnerabilities/brute/' \
+  -H 'Accept-Language: en-US,en;q=0.9,id;q=0.8' \
+  -H 'Cookie: PHPSESSID=bpj4ijd59mnepeuu59i2247c81; security=low' \
+  --compressed \
+  --insecure
+
+
+
+# dvwa get css 
+$ curl 'http://dvwa.com/dvwa/css/main.css'   \
+  -H 'Referer: http://dvwa.com/vulnerabilities/xss_r/' \  
+  -H 'User-Agent: Mozilla/5.0 (X11; Linux armv7l) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36' \  
+  --compressed  \
+  --insecure 
+
+
+# dvwa get js
+$ curl 'http://dvwa.com/dvwa/js/dvwaPage.js' \  
+  -H 'Referer: http://dvwa.com/vulnerabilities/xss_r/' \  
+  -H 'User-Agent: Mozilla/5.0 (X11; Linux armv7l) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36' \
+  --compressed \
+  --insecure
+
+
+# get response header
+$ curl -sSL -D - www.acooke.org -o /dev/null
+$ curl -s -I -X POST http://www.google.com
+# The Following command displays extra informations
+$ curl -X POST http://httpbin.org/post -v > /dev/null
+# You can ask server to send just HEAD, instead of full response
+$ curl -X HEAD -I http://httpbin.org/
+# For long response bodies (and various other similar situations), the solution I use is always to pipe to less, so
+$ curl -i https://api.github.com/users | less
+$ curl -s -D - https://api.github.com/users | less

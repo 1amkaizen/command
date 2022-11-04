@@ -1,0 +1,68 @@
+#command 
+#target on file
+$ theHarvester -f wilcards -s -v -r -n -c -b all
+# single target
+$ theHarvester -d domain.com -s -v -r -n -c -b all
+# Basic scan of the given domain, returns 500 results for each search engine.
+$ theharvester -d google.com -l 500 -b all
+# Output your scan results to a visual report in HTML format
+$ theharvester -d google.com -l 500 -b all -f results.html
+
+
+[!] Missing API key for binaryedge. 
+
+[!] Missing API key for Censys ID and/or Secret. 
+
+[!] Missing API key for fullhunt. 
+
+[!] Missing API key for Github. 
+
+[!] Missing API key for Hunter. 
+
+[!] Missing API key for Intelx. 
+
+[!] Missing API key for PentestTools. 
+
+[!] Missing API key for ProjectDiscovery. 
+
+[!] Missing API key for RocketReach. 
+
+[!] Missing API key for Securitytrail. 
+
+[!] Missing API key for virustotal. 
+
+[!] Missing API key for zoomeye.
+
+
+anubis, 
+baidu, 
+bevigil, 
+binaryedge,
+bing, 
+bingapi, 
+bufferoverun, 
+censys, 
+certspotter, 
+crtsh, 
+dnsdumpster, 
+duckduckgo, 
+fullhunt,                        
+github-code, 
+hackertarget, 
+hunter, 
+intelx, 
+omnisint, 
+otx, 
+pentesttools, 
+projectdiscovery, 
+qwant, 
+rapiddns, 
+rocketreach,                       
+securityTrails, 
+sublist3r, 
+threatcrowd, 
+threatminer, 
+urlscan, 
+virustotal, 
+yahoo, 
+zoomeye

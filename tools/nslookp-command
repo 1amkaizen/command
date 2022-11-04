@@ -1,0 +1,17 @@
+# nslookup dapat digunakan untuk melakukan query ke DNS dan memetakan nama domain menjadi alamat IP atau sebaliknya maupun data DNS lainnya
+# Cek A record domain
+$ nslookup example.com
+# Cek NS record domain 
+$ nslookup -type=ns example.com
+# Memeriksa SOA record domain
+$ nslookup -type=soa example.com
+# Memeriksa MX record domain
+$ nslookup -query=mx example.com
+# Menemukan semua DNS record domain
+$ nslookup -type=any example.com
+# Cek nslookup menggunakan Server DNS tertentu
+$ nslookup example.com ns1.nsexample.com
+# Cek Reverse DNS
+# Reverse DNS adalah untuk menerjemahkan suatu alamat ip ke nama host (hostname). Reverse DNS ini adalah kebalikan dari ping (melihat ip suatu domain).
+$ nslookup 10.20.30.40
+

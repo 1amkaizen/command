@@ -1,0 +1,26 @@
+## HTTP VULN Script
+$ sudo nmap -sV http-vuln-cve2006-3392.nse     192.168.43.134
+$ sudo nmap -sV http-vuln-cve2009-3960.nse     192.168.43.134
+$ sudo nmap -sV http-vuln-cve2010-0738.nse     192.168.43.134
+$ sudo nmap -sV http-vuln-cve2010-2861.nse     192.168.43.134
+$ sudo nmap -sV http-vuln-cve2011-3192.nse     192.168.43.134
+$ sudo nmap -sV http-vuln-cve2011-3368.nse     192.168.43.134
+$ sudo nmap -sV http-vuln-cve2012-1823.nse     192.168.43.134
+$ sudo nmap -sV http-vuln-cve2013-0156.nse     192.168.43.134
+$ sudo nmap -sV http-vuln-cve2013-6786.nse     192.168.43.134
+$ sudo nmap -sV http-vuln-cve2013-7091.nse     192.168.43.134
+$ sudo nmap -sV http-vuln-cve2014-2126.nse     192.168.43.134
+$ sudo nmap -sV http-vuln-cve2014-2127.nse     192.168.43.134
+$ sudo nmap -sV http-vuln-cve2014-2128.nse     192.168.43.134
+$ sudo nmap -sV http-vuln-cve2014-2129.nse     192.168.43.134
+$ sudo nmap -sV http-vuln-cve2014-3704.nse     192.168.43.134
+$ sudo nmap -sV http-vuln-cve2014-8877.nse     192.168.43.134
+$ sudo nmap -sV http-vuln-cve2015-1427.nse     192.168.43.134
+$ sudo nmap -sV http-vuln-cve2015-1635.nse     192.168.43.134
+$ sudo nmap -sV http-vuln-cve2017-1001000.nse  192.168.43.134
+$ sudo nmap -sV http-vuln-cve2017-5638.nse     192.168.43.134
+$ sudo nmap -sV http-vuln-cve2017-5689.nse     192.168.43.134
+$ sudo nmap -sV http-vuln-cve2017-8917.nse     192.168.43.134
+$ sudo nmap -sV http-vuln-misfortune-cookie.nse 192.168.43.134
+$ sudo nmap -sV http-vuln-wnr1000-creds.nse    192.168.43.134
+

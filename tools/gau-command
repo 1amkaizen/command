@@ -1,0 +1,8 @@
+
+Examples:
+
+$ printf example.com | gau
+$ cat domains.txt | gau --threads 5
+$ gau example.com google.com
+$ gau --o example-urls.txt example.com
+$ gau --blacklist png,jpg,gif example.com

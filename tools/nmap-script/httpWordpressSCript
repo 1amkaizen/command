@@ -1,0 +1,5 @@
+## HTTP Wordpress Script
+$ sudo nmap -sV http-wordpress-brute.nse 192.18.43.134
+$ sudo nmap -sV http-wordpress-enum.nse  192.18.43.134
+$ sudo nmap -sV http-wordpress-users.nse 192.18.43.134
+

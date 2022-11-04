@@ -1,0 +1,10 @@
+## SMTP Script
+$ sudo nmap -sV smtp-brute.nse             192.168.43.134
+$ sudo nmap -sV smtp-commands.nse          192.168.43.134
+$ sudo nmap -sV smtp-enum-users.nse        192.168.43.134
+$ sudo nmap -sV smtp-ntlm-info.nse         192.168.43.134
+$ sudo nmap -sV smtp-open-relay.nse        192.168.43.134
+$ sudo nmap -sV smtp-strangeport.nse       192.168.43.134
+$ sudo nmap -sV smtp-vuln-cve2010-4344.nse 192.168.43.134
+$ sudo nmap -sV smtp-vuln-cve2011-1720.nse 192.168.43.134
+$ sudo nmap -sV smtp-vuln-cve2011-1764.nse 192.168.43.134

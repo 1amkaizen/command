@@ -1,0 +1,13 @@
+## SSL Script
+$ sudo nmap -sV ssl-ccs-injection.nse 192.18.43.134
+$ sudo nmap -sV ssl-cert-intaddr.nse 192.18.43.134
+$ sudo nmap -sV ssl-cert.nse         192.18.43.134
+$ sudo nmap -sV ssl-date.nse         192.18.43.134
+$ sudo nmap -sV ssl-dh-params.nse    192.18.43.134
+$ sudo nmap -sV ssl-enum-ciphers.nse 192.18.43.134
+$ sudo nmap -sV ssl-heartbleed.nse   192.18.43.134
+$ sudo nmap -sV ssl-known-key.nse    192.18.43.134
+$ sudo nmap -sV ssl-poodle.nse       192.18.43.134
+$ sudo nmap -sV sslv2-drown.nse      192.18.43.134
+$ sudo nmap -sV sslv2.nse            192.18.43.134
+

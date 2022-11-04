@@ -1,0 +1,67 @@
+Proxying dan Intercepting CLI Tools
+
+Mencegat proxy HTTP seperti Burp Suite atau mitmproxy adalah alat yang sangat membantu - tidak hanya untuk pengujian dan penelitian keamanan tetapi juga untuk pengembangan, pengujian, dan penjelajahan API. Saya benar-benar menemukan diri saya menggunakan Burp lebih banyak untuk debugging dan belajar daripada untuk pentesting aktual saat ini. Akan sangat membantu untuk melihat "di balik tenda" pada permintaan HTTP aktual yang dibuat untuk memahami API yang kompleks atau untuk menguji apakah salah satu skrip atau alat saya berfungsi dengan benar.
+
+
+# Contoh 1 - Proxy curl dan wget
+
+
+Anda dapat mengekspor variabel terlebih dahulu, atau menjalankannya sebaris dengan perintah:
+
+
+$ export http_proxy=localhost:8080
+$ export https_proxy=localhost:8080
+$ curl ifconfig.io
+$ wget -O /dev/null ifconfig.io
+
+## or ##
+
+$ http_proxy=localhost:8080 https_proxy=localhost:8080 curl ifconfig.io
+$ http_proxy=localhost:8080 https_proxy=localhost:8080 wget -O /dev/null ifconfig.io
+
+# Itu berfungsi dengan baik karena ini hanya HTTP. Bagaimana dengan HTTPS? Jika Anda mencoba menjalankannya di luar kotak, Anda akan gagal:
+
+curl tidak mempercayai sertifikat yang diberikan Burp. Namun pesan kesalahan ini cukup membantu. 
+Sebagian besar alat CLI akan mundur ke sistem operasi saat memutuskan sertifikat mana yang dipercaya. 
+Jadi kami memiliki dua opsi utama:
+
+Nonaktifkan verifikasi kepercayaan
+Konfigurasikan sistem operasi kami untuk mempercayai Burp CA
+Opsi pertama adalah yang termudah. Untuk curl digunakan -k atau untuk wget digunakan --no-check-certificate:
+
+
+$ http_proxy=localhost:8080 https_proxy=localhost:8080 curl -k https://ifconfig.io
+$ http_proxy=localhost:8080 https_proxy=localhost:8080 wget -O /dev/null --no-check-certificate https://ifconfig.io
+
+## Mempercayai Sertifikat Proksi di Tingkat OS
+
+Untuk opsi 2, kita harus mengekspor Burp CA dari dalam Burp. Kita dapat mengunduh Sertifikat Burp dalam format DER ke ~/certs. Kami juga akan mengonversinya menjadi PEM:
+
+
+$ mkdir ~/certs
+$ wget -O ~/certs/burpca.der http://localhost:8080/cert
+$ cd ~/certs
+$ openssl x509 -inform DER -in burpca.der -out burpca.crt
+
+### Catatan: jika Anda menggunakan mitmproxy, sertifikatnya sudah ada~/.mitmproxy
+## Menginstal dan mempercayai sertifikat sangat bergantung pada OS.
+
+# Untuk sebagian besar distro, sertifikat tepercaya ada di /usr/share/ca-certificates. 
+#Salin burpca.crtfile ke /usr/share/ca-certificates
+#dan kemudian jalankan:
+
+$ sudo update-ca-certificates
+
+# Dengan Burp CA yang dipercaya oleh OS Anda, 
+#Anda tidak lagi harus menggunakan 
+# curl -k atau wget --no-check-certificates  dan Anda akan melihat lalu lintas HTTPS di Burp:
+
+
+#### Contoh 2 - Proxy JAR Java
+
+
+saya dapat menggunakan CLI ini untuk menanyakan versi Jira yang berjalan pada instance cloud yang dihosting secara acak:
+
+
+$ java -jar acli-9.1.0.jar -s https://greenshot.atlassian.net -a getServerInfo
+$ Jira version: 1001.0.0-SNAPSHOT, build: 100119, time: 2/6/20, 6:26 AM, description: Greenshot JIRA, url: https://greenshot.atlassian.net

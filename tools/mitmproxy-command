@@ -1,0 +1,39 @@
+Perintah
+Perintah adalah mekanisme yang memungkinkan pengguna untuk berinteraksi secara aktif dengan add-on. Mungkin contoh paling menonjol dari hal ini adalah antarmuka pengguna konsol mitmproxy - setiap interaksi dalam alat ini terdiri dari perintah yang terikat pada kunci. Perintah juga membentuk cara yang fleksibel dan sangat kuat untuk berinteraksi dengan mitmproxy dari command prompt. Di konsol mitmproxy Anda dapat memasukkan command prompt dengan :kuncinya. Prompt memiliki penyelesaian tab cerdas untuk nama perintah dan banyak tipe argumen bawaan - cobalah.
+
+Referensi kanonik untuk perintah adalah --commandsflag, yang diekspos oleh masing-masing alat mitmproxy. Melewati tanda ini akan membuang daftar beranotasi dari semua perintah terdaftar, argumennya, dan nilai kembaliannya ke layar. Di konsol mitmproxy Anda juga dapat melihat palet semua perintah di browser perintah (secara default dapat diakses dengan Cpengikatan kunci).
+
+#  Bekerja dengan Flows
+Banyak perintah mitmproxy mengambil arus sebagai argumen. Misalnya, tanda tangan untuk perintah replay klien terlihat seperti ini:
+
+:replay.client [flow]
+Itu berarti bahwa ia mengharapkan urutan satu atau lebih aliran. Di sinilah spesifikasi aliran masuk - mitmproxy akan secara cerdas memperluas bahasa pemilihan aliran yang fleksibel ke daftar aliran saat menjalankan perintah.
+
+Jalankan konsol mitmproxy, dan cegat beberapa lalu lintas sehingga kami memiliki alur untuk dikerjakan. Sekarang ketik perintah berikut:
+
+:replay.client @focus
+Pastikan Anda mencoba menggunakan penyelesaian tab untuk nama perintah dan spesifikasi aliran. Penentu @focusdiperluas ke aliran yang saat ini terfokus, jadi Anda akan melihat replay aliran ini. Namun, replay dapat mengambil sejumlah arus. Coba perintah berikut:
+
+:replay.client @all
+Sekarang Anda akan melihat semua aliran diputar ulang satu per satu. Kami memiliki kekuatan penuh bahasa filter mitmproxy yang kami miliki di sini, jadi kami juga dapat, misalnya, hanya memutar ulang aliran untuk domain tertentu:
+
+:replay.client "~d google.com"
+#  Binding Kunci Kustom
+Binding kunci Mitmproxy dapat disesuaikan dengan kebutuhan Anda dalam ~/.mitmproxy/keys.yamlfile. File ini terdiri dari urutan peta, dengan kunci berikut:
+
+key( wajib ): Kunci untuk mengikat.
+cmd( wajib ): Perintah untuk dijalankan saat tombol ditekan.
+context: Daftar konteks di mana kunci harus diikat. Secara default ini bersifat global (yaitu kuncinya terikat di mana-mana). Konteks yang valid adalah chooser, commands, dataviewer, eventlog, flowlist, flowview, global, grideditor, help, keybindings, options.
+help: String bantuan untuk pengikatan yang akan ditampilkan di browser pengikat kunci.
+#  Contoh
+-
+  # Simple global binding
+  key: ctrl a
+  cmd: replay.client @marked
+-
+  # Bind key only in the flowlist
+  # Note that 1 is quoted, or YAML interprets it as a digit
+  key: "1"
+  ctx: ["flowlist"]
+  cmd: console.nav.down
+  help: Go to next flow
