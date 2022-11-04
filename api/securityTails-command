@@ -1,0 +1,11 @@
+# api keys
+FhrfCfk2AK01dVZYEx83Q2rADUfiUdTV
+# basic
+https://api.securitytrails.com/v1/domain/"+domain+"/subdomains
+# subdomain
+https://api.securitytrails.com/v1/domain/hackerone.com/subdomains?apikey=FhrfCfk2AK01dVZYEx83Q2rADUfiUdTV
+#authentications
+https://api.securitytrails.com/v1/ping?apikey=FhrfCfk2AK01dVZYEx83Q2rADUfiUdTV
+# curl
+curl "https://api.securitytrails.com/v1/domain/apple.com" \ -H 'apikey: FhrfCfk2AK01dVZYEx83Q2rADUfiUdTV'
+

@@ -1,0 +1,63 @@
+#api key
+hD7yCVCkl8KOvH3E
+
+# wordlist
+https://osint.bevigil.com/api/{package_id}/wordlist/
+# curl 
+curl --location --request GET 'http://osint.bevigil.com/api/com.example.app/wordlist/' \
+--header 'X-Access-Token: <API Key Here>'
+
+# host
+https://osint.bevigil.com/api/{package_id}/hosts/
+# curl 
+curl --location --request GET 'http://osint.bevigil.com/api/com.example.app/hosts/' \
+--header 'X-Access-Token: <API Key Here>'
+
+# s3 bracket
+https://osint.bevigil.com/api/{package_id}/S3-buckets/
+# curl
+curl --location --request GET 'http://osint.bevigil.com/api/com.example.app/S3-buckets/' \
+--header 'X-Access-Token: <API Key Here>'
+
+# all assets
+https://osint.bevigil.com/api/{package_id}/all-assets/
+# curl
+curl --location --request GET 'http://osint.bevigil.com/api/com.example.app/all-assets/' \
+--header 'X-Access-Token: <API Key Here>'
+
+# URL param
+https://osint.bevigil.com/api/{package_id}/params/
+# curl
+curl --location --request GET 'http://osint.bevigil.com/api/com.example.app/params/' \
+--header 'X-Access-Token: <API Key Here>'
+
+# apps
+https://osint.bevigil.com/api/{domain_name}/apps/
+# curl
+curl --location --request GET 'http://osint.bevigil.com/api/example.com/apps/' \
+--header 'X-Access-Token: <API Key Here>'
+
+# subdomains
+https://osint.bevigil.com/api/{domain_name}/subdomains/
+# curl 
+curl --location --request GET 'http://osint.bevigil.com/api/example.com/subdomains/' \
+--header 'X-Access-Token: <API Key Here>'
+
+# Urls
+https://osint.bevigil.com/api/{domain_name}/urls/
+# curl
+curl --location --request GET 'http://osint.bevigil.com/api/example.com/urls/' \
+--header 'X-Access-Token: <API Key Here>'
+
+# search s3 bucket
+https://osint.bevigil.com/api/{keyword}/S3-keyword/
+# curl 
+curl --location --request GET 'http://osint.bevigil.com/api/bank/S3-keyword/' \
+--header 'X-Access-Token: <API Key Here>'
+
+# get report
+https://osint.bevigil.com/api/{package_id}/report/
+# curl
+curl --location --request GET 'http://osint.bevigil.com/api/com.example.app/report/' \
+--header 'X-Access-Token: <API Key Here>'
+

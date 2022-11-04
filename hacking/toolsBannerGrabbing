@@ -1,0 +1,39 @@
+### whatweb
+## mengungkapkan informasi server dengan versinya, alamat IP, Judul halaman web, dan sistem operasi yang berjalan.
+$ whatweb http://192.168.0.11
+
+### curl
+## mengambil detail banner dari server HTTP.
+$ curl –s –I 192.168.0.11
+
+### wget
+## menangkap banner HTTP dari server jarak jauh.
+$ wget –q –S 192.168.0.11
+
+### telnet
+## untuk berinteraksi dengan layanan untuk mengambil banner mereka.
+# mengambil banner FTP 
+#  mengambil banner FTP 
+$ telnet 192.168.0.11 21
+
+### netcat
+## Netcat adalah utilitas jaringan yang sekali lagi akan membantu kita mengambil banner FTP dari server host jarak jauh.
+$ nc 192.168.0.11 21
+
+### nikto
+## ntuk mengambil banner situs web yang berjalan di server Ubuntu.
+$ nikto –h http://192.168.0.11
+
+### nmap
+## menggunakan Nmap sebagai 
+banner grabber sederhana yang terhubung ke port TCP terbuka dan mencetak apa pun yang dikirim oleh layanan mendengarkan dalam beberapa detik
+# untuk mengambil banner ssh dengan port 22
+$ nmap -sV –p22 192.168.0.11
+$ nmap -sV --script=banner 192.168.0.11
+ 
+### dmitry
+## untuk mengumpulkan informasi sebanyak mungkin tentang sebuah host. 
+## mengumpulkan kemungkinan subdomain, alamat email, informasi waktu aktif, pemindaian port tcp, pencarian whois, dan banyak lagi.
+$ dmitry –pb 192.168.0.11
+
+

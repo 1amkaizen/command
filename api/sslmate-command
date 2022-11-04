@@ -1,0 +1,9 @@
+curl -H "Authorization: Bearer k46837_unc91J0LtVlvd97kuub0" https://sslmate.com/api/v0/monitoring/known_keys
+
+curl 'https://api.certspotter.com/v1/issuances?domain=hackerone.com&include_subdomains=true&expand=dns_names&expand=cert' | jq '.[].dns_names'
+
+curl 'https://api.certspotter.com/v1/issuances?domain=github.com&include_subdomains=true&expand=dns_names&expand=cert&after=513100902'
+
+curl 'https://api.certspotter.com/v1/issuances?domain=github.com&include_subdomains=true&expand=dns_names&expand=cert&after=604457704'
+
+curl -u k46838_zunl6QkX09iPw8uiUtGP: 'https://api.certspotter.com/v1/issuances?domain=hackerone.com&include_subdomains=true&expand=dns_names&expand=cert' | jq '.[].dns_names'

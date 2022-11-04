@@ -1,0 +1,21 @@
+# api key
+ a16face94ac0bf19655b63603c432d3420ea6786
+
+https://api.hunter.io/v2/domain-search?domain=stripe.com&api_key=a16face94ac0bf19655b63603c432d3420ea6786
+# domain search
+GET https://api.hunter.io/v2/domain-search?domain=intercom.io&api_key=a16face94ac0bf19655b63603c432d3420ea6786
+
+# email finder
+GET https://api.hunter.io/v2/email-finder?domain=reddit.com&first_name=Alexis&last_name=Ohanian&api_key=a16face94ac0bf19655b63603c432d3420ea6786
+
+# Author finder
+GET https://api.hunter.io/v2/author-finder?url=https://hunter.io/blog/how-to-know-if-someone-read-your-email/&api_key=a16face94ac0bf19655b63603c432d3420ea6786
+
+# Email verifer
+GET https://api.hunter.io/v2/email-verifier?email=patrick@stripe.com&api_key=a16face94ac0bf19655b63603c432d3420ea6786
+
+# email count
+https://api.hunter.io/v2/email-count?domain=stripe.com
+
+# account informaation
+https://api.hunter.io/v2/account?api_key=a16face94ac0bf19655b63603c432d3420ea6786

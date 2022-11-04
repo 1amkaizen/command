@@ -1,0 +1,9 @@
+# install
+$ docker pull rebouny/webgoat-8.0
+
+# running
+$ docker run -d -p 127.0.0.1:8080:8080 rebouny/webgoat-8.0
+
+# on browser
+ http://127.0.0.1:8080
+ 

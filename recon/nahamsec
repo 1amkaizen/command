@@ -1,0 +1,125 @@
+#tools
+-certspotter
+-crt.sh
+-htprobe
+-dirsearch
+
+
+#Search on crt.sh ---> %.yahoo.com
+-> Anda dapat menempatkan % wildcard di mana saja dalam pencarian seperti %api.yahoo.com
+--> %internal%.yahoo.com
+# Search on certspotter ---> yahoo.com
+#Periksa kode github di repo recon_profile nahamsec untuk perintah cerspotter bash 1 baris, Anda dapat mengaturnya di .bash_profile Anda dan kemudian menjalankannya hanya dengan memanggil nama fungsi
+$ certspotter yahoo.com -
+# Periksa berapa banyak subdomain yang hidup/online?
+$ certspotter corp.yahoo.com | httprobe
+
+# Buat direktori untuk target dan semua subdomain dan semua domain yang hidup:
+$ mkdir yahoo.com
+$ cd yahoo.com
+$ touch all.txt
+$ touch alive.txt
+
+#Kami mengambil titik akhir api karena ini memberikan hal-hal menarik yang sangat keren, internal dan korporat karena ini adalah internal yahoo dan kami ingin tahu apakah kami memiliki akses ke sana dari luar.
+$ certspotter yahoo.com | grep dev | httprobe
+$ certspotter assistant.yahoo.com | grep dev | httprobe
+#buka halaman dari sini di browser untuk memeriksa responsnya
+#Catatan: Kesalahan 404 tidak berarti bahwa kami tidak memiliki apa pun di sana
+#contoh:
+$ for i in certspotter assistant.yahoo.com | httprobe; do curl $i/phpinfo.php; done
+$ crtsh ops.yahoo.com >> all.txt
+$ crtsh corp.yahoo.com >> all.txt
+
+#Prosesnya adalah menemukan hal-hal menarik dan bagaimana infrastruktur sebuah website dibangun.
+#Periksa xobni di cr.sh seperti %xobni%.yahoo.com
+
+$ crtsh xobni.yahoo.com >> all.txt
+
+$ nano ~/.bash_profile
+
+getcount(){  
+cat all.txt | wc -l  
+}
+  
+$ source ~/.bash_profile
+$ cat all.txt | httprobe
+
+#Letakkan beberapa wildcard lagi di situs web crt.sh ----> %25.%25.%25.%25.%25.yahoo.com 
+#Punya beberapa subdomain yang menarik:
+
+-splunk.yahoo.comP
+-test-paranoids.yahoo.com
+-manhattan.tp2.yahoo.com
+
+$ crtsh test-paranoids.yahoo.com | httprobe
+$ crtsh bf1.yahoo.com | wc -l --> 509
+$ crtsh bf1.yahoo.com
+
+- corp.bf1.yahoo.com   
+- mail.bf1.yahoo.com  
+- infra.bf1.yahoo.com  
+- vip.bf1.yahoo.com  
+- openstack.bf1.yahoo.com  
+- cs.bf1.yahoo.com  
+- flurry.bf1.yahoo.com  
+- prod.bf1.yahoo.com
+- azurite.bf1.yahoo.com  
+- omega.bf1.yahoo.com
+
+#ide
+
+-%uat%
+-run a curl on adx.bf1.yahoo.com/pguix
+
+#Google Dorks
+
+site:bf1.yahoo.com -flickr -omega -adx
+"bf1.yahoo.com" github.com
+
+# dump/buang semua subdomain bf1 disini
+$ vi bf1 
+
+for i in `cmd`; do  
+   crtsh $i  
+; done
+  
+# Jalankan crtsh pada semua domain bf1 di atas
+#Dapatkan beberapa domain yang lebih menarik.
+
+- iextract.bf1.yahoo.com
+- diy.bf1.yahoo.com
+- manhatan.bf1.yahoo.com
+- netops.ne1.yahoo.com
+- hk.%.yahoo.com
+- advertising.yahoo.com
+- creative.yahoo.com
+
+# Periksa Beberapa subdomain menarik yang mengandung kata kunci ini
+- admin
+- jenkins
+- stage
+- test
+- dev
+- devops
+- staff
+- db
+- qa
+- internal
+
+#Sekarang temukan semua domain yang masih hidup
+$ cat all.txt | httprobe >> alive.txt
+
+#Periksa httprobe pada semua port kecuali port 80 dan 443
+$ cat all.txt | httprobe -s -p https:8443
+
+# Ambil Screenshot sekarang
+#Install phantomJS
+$ python webscreenshot.py \<input_dir> -o \<out_dir> -w 20 -m -a "X-FORWARDED-FOR:127.0.0.1"
+
+for I in $(ls); do  
+    echo "$I" >>index.html  
+    echo "<img src=$I><br>" >> index.html;  
+done  
+for I in $(cat alive.txt); do  
+    python3 dirsearch ... -u https://$I  
+done  

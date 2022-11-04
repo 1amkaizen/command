@@ -1,0 +1,11 @@
+Lab: Kerentanan injeksi SQL yang memungkinkan bypass login
+Lab ini berisi kerentanan injeksi SQL dalam fungsi login.
+
+Untuk mengatasi lab, lakukan serangan injeksi SQL yang masuk ke aplikasi sebagai administrator pengguna.
+
+###lab
+https://portswigger.net/academy/labs/launch/befc0f5ddbc0e32a7adc4c9d4d286582f462f70bf32a8d5df15489d679dcd5c9?referrer=%2fweb-security%2fsql-injection%2flab-login-bypass
+
+### 
+1.Gunakan Burp Suite untuk mencegat dan mengubah permintaan login.
+2.Ubah usernameparameter, berikan nilai:administrator'--

@@ -1,0 +1,8 @@
+## exploit VNCServer,,vns ini berjalan pada port 5900
+
+# kita akan coba mengakses vns servernys
+
+$ vncviewer <ip target>
+
+# kita akan di minta untuk memasukkan password
+# untuk passwordnya bisa bruteforce atau bisa scan dengan nessus

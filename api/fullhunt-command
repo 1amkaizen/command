@@ -1,0 +1,20 @@
+#api key
+67f6ea7f-2a66-44f1-be86-99cb2b6f175c
+
+https://fullhunt.io/api/v1/domain/%s/subdomains
+
+# To authenticate:
+# With shell, you can just pass the correct header with each request
+curl "https://fullhunt.io/api/v1/auth/status" \
+  -H "X-API-KEY: 67f6ea7f-2a66-44f1-be86-99cb2b6f175c"
+
+# domain details
+curl "https://fullhunt.io/api/v1/domain/kaspersky.com/details" \
+  -H "X-API-KEY: 67f6ea7f-2a66-44f1-be86-99cb2b6f175c"
+
+## subdomains
+curl "https://fullhunt.io/api/v1/domain/kaspersky.com/subdomains" \
+  -H "X-API-KEY: 67f6ea7f-2a66-44f1-be86-99cb2b6f175c"
+## specifis host
+curl "https://fullhunt.io/api/v1/host/loja.center.kaspersky.com" \
+  -H "X-API-KEY: 67f6ea7f-2a66-44f1-be86-99cb2b6f175c"

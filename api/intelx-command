@@ -1,0 +1,8 @@
+#api key
+Key:	698383ae-303d-4000-9a62-70ee444604d8
+URL:	https://2.intelx.io/
+
+https://%s/phonebook/search?k=%s
+https://%s/phonebook/search/result?k=%s&id=%s&limit=10000
+
+

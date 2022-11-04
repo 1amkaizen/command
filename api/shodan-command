@@ -1,0 +1,131 @@
+#api-key
+jH6y3CEE4Ddp7s2N8RtRDGucC4mOvlWe
+
+https://www.shodan.io/search?query=hackerone.com
+
+# contoh penggunaan
+# shodan host/ip
+$ https://api.shodan.io/shodan/host/8.8.8.8?key=jH6y3CEE4Ddp7s2N8RtRDGucC4mOvlWe
+$ curl -X GET "https://api.shodan.io/shodan/host/8.8.8.8?key=jH6y3CEE4Ddp7s2N8RtRDGucC4mOvlWe"
+# shodan host/count
+$ https://api.shodan.io/shodan/host/count?key=jH6y3CEE4Ddp7s2N8RtRDGucC4mOvlWe&query={query}&facets={facets}
+$ curl -X GET "https://api.shodan.io/shodan/host/count?key=jH6y3CEE4Ddp7s2N8RtRDGucC4mOvlWe&query=port:22&facets=org,os"
+
+#shodan host/search
+$ curl -X GET "https://api.shodan.io/shodan/host/search?key=jH6y3CEE4Ddp7s2N8RtRDGucC4mOvlWe&query=product:nginx&facets=country"
+#/shodan/host/search/facets
+$ curl -X GET "https://api.shodan.io/shodan/host/search/facets?key=jH6y3CEE4Ddp7s2N8RtRDGucC4mOvlWe"
+#/shodan/host/search/filters
+$ curl -X GET "https://api.shodan.io/shodan/host/search/filters?key=jH6y3CEE4Ddp7s2N8RtRDGucC4mOvlWe"
+#/shodan/host/search/tokens
+$ curl -X GET "https://api.shodan.io/shodan/host/search/tokens?key=jH6y3CEE4Ddp7s2N8RtRDGucC4mOvlWe&query=Raspbian port:22"
+##On-Demand Scanning
+#/shodan/ports
+$ curl -X GET "https://api.shodan.io/shodan/ports?key=jH6y3CEE4Ddp7s2N8RtRDGucC4mOvlWe"
+#/shodan/protocols
+$ curl -X GET "https://api.shodan.io/shodan/protocols?key=jH6y3CEE4Ddp7s2N8RtRDGucC4mOvlWe"
+#/shodan/scan
+$ curl -X POST "https://api.shodan.io/shodan/scan?key=jH6y3CEE4Ddp7s2N8RtRDGucC4mOvlWe" -d 'ips=8.8.8.8,1.1.1.1'
+#/shodan/scan/internet
+$ curl -X POST "https://api.shodan.io/shodan/scan/internet?key=jH6y3CEE4Ddp7s2N8RtRDGucC4mOvlWe" -d 'port=80' -d 'protocol=http'
+#/shodan/scans
+$ curl -X GET "https://api.shodan.io/shodan/scans?key=jH6y3CEE4Ddp7s2N8RtRDGucC4mOvlWe"
+#/shodan/scan/{id}
+$ curl -X GET "https://api.shodan.io/shodan/scan/Mo8W7itcWumiy9Ay?key=jH6y3CEE4Ddp7s2N8RtRDGucC4mOvlWe"
+##Network Alerts
+#/shodan/alert
+$ https://api.shodan.io/shodan/alert?key=jH6y3CEE4Ddp7s2N8RtRDGucC4mOvlWe
+$ curl -X POST "https://api.shodan.io/shodan/alert?key=jH6y3CEE4Ddp7s2N8RtRDGucC4mOvlWe" -H 'Content-Type: application/json' -d'
+    {
+        "name": "DNS Alert",
+        "filters": {
+            "ip": [
+                "8.8.8.8",
+                "1.1.1.1"
+            ]
+        },
+        "expires": 0
+    }
+'
+#/shodan/alert/{id}/info GET
+$ curl -X GET "https://api.shodan.io/shodan/alert/67UQ4JM3NGJKROR9/info?key=jH6y3CEE4Ddp7s2N8RtRDGucC4mOvlWe"
+#/shodan/alert/{id} DELETE
+$ curl -X DELETE "https://api.shodan.io/shodan/alert/67UQ4JM3NGJKROR9?key=jH6y3CEE4Ddp7s2N8RtRDGucC4mOvlWe"
+#/shodan/alert/{id} POST
+$ https://api.shodan.io/shodan/alert/{id}?key=jH6y3CEE4Ddp7s2N8RtRDGucC4mOvlWe
+$ curl -X POST "https://api.shodan.io/shodan/alert/67UQ4JM3NGJKROR9?key=jH6y3CEE4Ddp7s2N8RtRDGucC4mOvlWe" -H 'Content-Type: application/json' -d'
+    {
+        "filters": {
+            "ip": [
+                "8.8.8.8",
+                "1.1.1.1"
+            ]
+        }
+    }
+'
+#/shodan/alert/info
+$ curl -X GET "https://api.shodan.io/shodan/alert/info?key=jH6y3CEE4Ddp7s2N8RtRDGucC4mOvlWe"
+#/shodan/alert/triggers
+$ curl -X GET "https://api.shodan.io/shodan/alert/triggers?key=jH6y3CEE4Ddp7s2N8RtRDGucC4mOvlWe"
+#/shodan/alert/{id}/trigger/{trigger}
+$ curl -X PUT "https://api.shodan.io/shodan/alert/OYPRB8IR9Z35AZPR/trigger/new_service,vulnerable?key=jH6y3CEE4Ddp7s2N8RtRDGucC4mOvlWe"
+#/shodan/alert/{id}/trigger/{trigger}
+$ curl -X DELETE "https://api.shodan.io/shodan/alert/OYPRB8IR9Z35AZPR/trigger/new_service,vulnerable?key=jH6y3CEE4Ddp7s2N8RtRDGucC4mOvlWe"
+#/shodan/alert/{id}/trigger/{trigger}/ignore/{service}
+$ curl -X PUT "https://api.shodan.io/shodan/alert/OYPRB8IR9Z35AZPR/trigger/new_service/ignore/1.1.1.1:53?key=jH6y3CEE4Ddp7s2N8RtRDGucC4mOvlWe"
+#/shodan/alert/{id}/trigger/{trigger}/ignore/{service}
+$ curl -X DELETE "https://api.shodan.io/shodan/alert/OYPRB8IR9Z35AZPR/trigger/new_service/ignore/1.1.1.1:53?key=jH6y3CEE4Ddp7s2N8RtRDGucC4mOvlWe"
+#/shodan/alert/{id}/notifier/{notifier_id}
+$ curl -X PUT "https://api.shodan.io/shodan/alert/OYPRB8IR9Z35AZPR/notifier/default?key=jH6y3CEE4Ddp7s2N8RtRDGucC4mOvlWe"
+#/shodan/alert/{id}/notifier/{notifier_id}
+$ curl -X DELETE "https://api.shodan.io/shodan/alert/OYPRB8IR9Z35AZPR/notifier/default?key=jH6y3CEE4Ddp7s2N8RtRDGucC4mOvlWe"
+##Notifiers
+#/notifier
+$ curl -X GET "https://api.shodan.io/notifier?key=jH6y3CEE4Ddp7s2N8RtRDGucC4mOvlWe"
+#/notifier/provider
+$ curl -X GET "https://api.shodan.io/notifier/provider?key=jH6y3CEE4Ddp7s2N8RtRDGucC4mOvlWe"
+#/notifier
+$ curl -X POST "https://api.shodan.io/notifier?key=jH6y3CEE4Ddp7s2N8RtRDGucC4mOvlWe" -d 'provider=email' -d 'description=Email notifier' -d 'to=jmath@shodan.io'
+#/notifier/{id}
+$ curl -X DELETE "https://api.shodan.io/notifier/1VxiaJb93Gn8TUnM?key=jH6y3CEE4Ddp7s2N8RtRDGucC4mOvlWe"
+#/notifier/{id}
+$ curl -X GET "https://api.shodan.io/notifier/1VxiaJb93Gn8TUnM?key=jH6y3CEE4Ddp7s2N8RtRDGucC4mOvlWe"
+#/notifier/{id}
+$ curl -X PUT "https://api.shodan.io/notifier/1VxiaJb93Gn8TUnM?key=jH6y3CEE4Ddp7s2N8RtRDGucC4mOvlWe" -d 'to=jmath@gmail.com'
+##Directory Methods
+#/shodan/query
+$ curl -X GET "https://api.shodan.io/shodan/query?key=jH6y3CEE4Ddp7s2N8RtRDGucC4mOvlWe"
+#/shodan/query/search
+$ curl -X GET "https://api.shodan.io/shodan/query/search?query=webcam&key=jH6y3CEE4Ddp7s2N8RtRDGucC4mOvlWe"
+#/shodan/query/tags
+$ curl -X GET "https://api.shodan.io/shodan/query/tags?key=jH6y3CEE4Ddp7s2N8RtRDGucC4mOvlWe"
+##Bulk Data  Enterprise
+#/shodan/data
+$ curl -X GET "https://api.shodan.io/shodan/data?key=jH6y3CEE4Ddp7s2N8RtRDGucC4mOvlWe"
+#/shodan/data/{dataset}
+$ curl -X GET "https://api.shodan.io/shodan/data/raw-daily?key=jH6y3CEE4Ddp7s2N8RtRDGucC4mOvlWe"
+##Manage Organization Enterprise
+#/org
+$ curl -X GET "https://api.shodan.io/org?key=jH6y3CEE4Ddp7s2N8RtRDGucC4mOvlWe"
+#/org/member/{user}
+$ curl -X PUT "https://api.shodan.io/org/member/new-member@shodan.io?key=jH6y3CEE4Ddp7s2N8RtRDGucC4mOvlWe"
+#/org/member/{user}
+$ curl -X DELETE "https://api.shodan.io/org/member/new-member@shodan.io?key=jH6y3CEE4Ddp7s2N8RtRDGucC4mOvlWe"
+##Account Methods
+#/account/profile
+$ curl -X GET "https://api.shodan.io/account/profile?key=jH6y3CEE4Ddp7s2N8RtRDGucC4mOvlWe"
+##DNSMethods
+#/dns/domain/{domain}
+$ curl -X GET "https://api.shodan.io/dns/domain/google.com?key=jH6y3CEE4Ddp7s2N8RtRDGucC4mOvlWe"
+#/dns/resolve
+$ curl -X GET "https://api.shodan.io/dns/resolve?hostnames=google.com,facebook.com&key=jH6y3CEE4Ddp7s2N8RtRDGucC4mOvlWe"
+#/dns/reverse
+$ curl -X GET "https://api.shodan.io/dns/reverse?ips=8.8.8.8,1.1.1.1&key=jH6y3CEE4Ddp7s2N8RtRDGucC4mOvlWe"
+##Utility Methods
+#/tools/httpheaders
+curl -X GET "https://api.shodan.io/tools/httpheaders?key=jH6y3CEE4Ddp7s2N8RtRDGucC4mOvlWe"
+#/tools/myip
+$ curl -X GET "https://api.shodan.io/tools/myip?key=jH6y3CEE4Ddp7s2N8RtRDGucC4mOvlWe"
+##API Status Methods
+#/api-info
+$ curl -X GET "https://api.shodan.io/api-info?key=jH6y3CEE4Ddp7s2N8RtRDGucC4mOvlWe"

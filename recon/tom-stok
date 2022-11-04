@@ -1,0 +1,89 @@
+#for subdomain enumeraton
+$ assetfinder --subs-onlyuber.com > domains
+
+#to cek reuest http or https
+$ cat domains | httprobe | tee hosts
+
+$ meg -d 1000 -v /
+$ cd out
+$ vim index
+
+$ grep -Hnri uberinter *
+$ grep -Hnri uberinter * | vim -
+
+:%!sort -u
+:%!grep -v Content-Secur
+# V=Invert
+:%!grep -vi 
+
+$ gf aws-keys
+$ gf s3-buckets
+$ gf base64
+$ cat ~/.gf/base64.json
+# gf untuk mempersingkat pencarian yang asalnya seperti ini
+$ grep -Hnroe #isi dari base64
+# kita contohkan
+$ echo '{"foo' | base64
+
+$ gf base64| vim -
+:%!awk -F':' '{print $3}'
+# ctrl v = for visual block and hit x for deleted
+# shift A = Append
+# .Repetes you last step
+# / = search
+# $ = End of the line
+/\.$
+# untuk search and replace
+# /FOO/ = // jika kamu mencari lagi
+:%$/searchhere/
+# untuk mencari tanpa slash
+:%$///
+# sort -u = unique aka remove dupes
+:%!sort -u
+# copy salah satu nama dan jalankan
+$ echo namanya | base64 -d
+# kita akan translate dari base64 nya di vim dengan xargs
+$ gf base64 | vim -
+# xargs = takes multiple lines of input and runs a commnd for ech line
+:%!xargs -n1 -I{} sh -c 'echo {} | base64 -d'  
+# dan itu akan mengubah base64
+
+# mencari file
+$ find . -type f
+# give it a list of files and have it parse things out
+# jika kita ingin mencari js file contohnya
+
+# html-tool attribs src = look for src
+$ find . -type f | html-tool attribs src
+
+# grep '\.js$' = hanya akhiran dengan .js
+$ find . -type f | html-tool attribs src | grep '\.js$'
+
+# kita juga bisa mencari tags title dengan html tool
+$ find . -type f | html-tool tags title | vim -
+:%!sort -u
+
+# :tabnew | read !grep-Hnr 'self'
+# ctrl w g shift f
+# for wordd wrap
+:set wrap!
+
+# on bash
+{ find .git/objects/pack/ -name "*.idx ...
+
+# for find every urls
+$ gf urls
+$ gf urls | grep - uber | vim -
+# for search uniq
+:%!unfurl -u paths
+
+# for get all params
+# param miner = finds hidden params
+:%!unfurl -u keys
+
+# using wayback machine
+$ echo uber.com | waybackurls | head
+
+
+
+

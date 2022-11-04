@@ -1,0 +1,20 @@
+Lab: Serangan UNION injeksi SQL, menemukan kolom yang berisi teks
+
+Lab ini berisi kerentanan injeksi SQL dalam filter kategori produk. Hasil dari kueri dikembalikan dalam respons aplikasi, sehingga Anda dapat menggunakan serangan UNION untuk mengambil data dari tabel lain. Untuk membuat serangan seperti itu, Anda harus terlebih dahulu menentukan jumlah kolom yang dikembalikan oleh kueri. Anda dapat melakukan ini dengan menggunakan teknik yang Anda pelajari di lab sebelumnya . Langkah selanjutnya adalah mengidentifikasi kolom yang kompatibel dengan data string.
+
+Lab akan memberikan nilai acak yang perlu Anda tampilkan dalam hasil kueri. Untuk mengatasi lab, lakukan serangan SQL injection UNION yang mengembalikan baris tambahan yang berisi nilai yang diberikan. Teknik ini membantu Anda menentukan kolom mana yang kompatibel dengan data string.
+
+###lab 
+https://portswigger.net/academy/labs/launch/dc3ff4b519f1a96f0bd7507a607ced9ca7f87900eb196d0a9b25001de1833f5e?referrer=%2fweb-security%2fsql-injection%2funion-attacks%2flab-find-column-containing-text
+
+###
+1. Use Burp Suite to intercept and modify the request that sets the product category filter.
+2.Tentukan jumlah kolom yang dikembalikan oleh kueri . Verifikasi bahwa kueri mengembalikan tiga kolom, menggunakan payload berikut dalam categoryparameter:
+
+'+UNION+SELECT+NULL,NULL,NULL--
+
+3.Coba ganti setiap null dengan nilai acak yang disediakan oleh lab, misalnya:
+
+'+UNION+SELECT+'abcdef',NULL,NULL--
+
+4.Jika terjadi kesalahan, lanjutkan ke nol berikutnya dan coba itu sebagai gantinya.

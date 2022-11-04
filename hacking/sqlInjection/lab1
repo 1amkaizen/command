@@ -1,0 +1,15 @@
+Lab: Kerentanan injeksi SQL dalam klausa WHERE yang memungkinkan pengambilan data tersembunyi
+
+Lab ini berisi kerentanan injeksi SQL dalam filter kategori produk. Ketika pengguna memilih kategori, aplikasi melakukan query SQL seperti berikut:
+
+SELECT * FROM products WHERE category = 'Gifts' AND released = 1
+Untuk mengatasi lab, lakukan serangan injeksi SQL yang menyebabkan aplikasi menampilkan detail semua produk dalam kategori apa pun, baik yang dirilis maupun yang belum dirilis.
+
+###lab
+https://0a10006a0431cc63c00a5451001800e6.web-security-academy.net/
+
+###
+1.Gunakan Burp Suite untuk mencegat dan mengubah permintaan yang menyetel filter kategori produk.
+2.Ubah categoryparameter, berikan nilainya'+OR+1=1--
+3.Kirim permintaan, dan verifikasi bahwa respons sekarang berisi item tambahan.
+

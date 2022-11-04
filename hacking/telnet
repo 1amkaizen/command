@@ -1,0 +1,6 @@
+# exploit terlnet,telnet ini berjalan pada port 23
+# enumeration dengan nmap
+$ nmap -sV <ip target>
+# kemudian kita akan menhbungkan le target dengan telnet
+$ telnet <ip target>
+# dan kita akan di minta untuk login

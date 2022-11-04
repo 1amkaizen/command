@@ -1,0 +1,198 @@
+#Buat file dengan nama wilcards dan isi dengan target
+
+#target
+- shopify.com
+- shopifykloud.com
+
+# tools
+- assetfinder
+- findomain
+- subfinder
+- httprobe
+- anew
+- gf
+- html-tool
+- meg
+- waybckurls
+- comb
+- ffuf
+- fff
+- urinteristing
+- inscope
+- webpste
+- git-dump
+- tok
+# mulai
+# mencari subdomain
+$ cat domains | sort -u | httprobe -c 50 -t 3000 | anew -q hosts
+$ cat wilcards | assetfinder --subs-only  | anew domains
+$ cat domains | httprobe -c 80 --prefer-https | anew hosts
+$ findomain -f wilcards | tee -a findomain.out
+# copy hasil findomain dan masukkan ke file form-findomain
+$ cat from-findomain | anew domains | httprobe -c 50 | anew hosts
+# cari lagi dengan subfinder
+$ subfinder -dL wilcards -v | anew domains | httprobe -c 50 | anew hosts
+$ wc hosts
+$ cat hosts | fff -d 1 -S -o roots
+$ cd roots
+
+# untuk menemukan kata di dalam file seperti key,aws token,dll
+$ find . -type f -name *.body
+$ find . -type f -name *.meta
+$ find . -type f -name *.header
+$ find . -type f | vim -
+$ find . -type f | html-tool tags title
+$ find . -type f | html-tool attribs src
+#atau
+$ vimprev $(find . -type f)
+	# mengapa pentinga mengumpulkan header
+	# berikut contoh yang bisa di lakkan
+
+	$ telnet example.com
+
+	GET / HTTP/1.1
+	Host: example.com
+	Accept: text/html
+
+	#tekan enter dan anda akan mendapatkan header response
+	# atau bisa juga,untuk melihat opsi apa saja yang terbuka
+	OPTIONS / HTTP/1.1
+	Host: example.com
+
+# disini kita mendapatkan header X-Shopify-Stage: Production
+
+# untuk menemukan kata di dalam file seperti key,aws token,dll
+$ grep -Hnri
+$ grep -Hnri aws_
+$ grep -Hnri secret
+$ grep -hri X-Shopify-Stage | anew
+$ grep -Hnri 'X-Shopify-Stage: canary'
+$ grep -Hnri 'X-Shopify-Stage: canary' | vim -
+# atau
+$ vimprev $(grep -Hnri 'X-Shopify-Stage: canary')
+#Kita sering melihat banyak halaman mengembalikan "200 OK" tetapi sebenarnya tidak,kita akan cek dengan
+$ grep -Hnri '200 Ok' | grep -v ^index
+$ grep -lru '200 OK' | grep -v ^index | xargs -n1 ls -la
+$ grep -lru '200 OK' | grep -v ^index | xargs -n1 ls -la | sort -k5,5
+#output di atas akan mengurutkan menurut panjangnya sehingga Anda dapat memeriksa panjang yang menarik
+$ find . -type f -exec cat {} \; | sort --version-sort -u | wc
+$ find . -type f -exec cat {} \; | sort --version-sort -u | vim -
+#
+$ gf debug-pages
+$ gf firebase
+$ gf http-auth
+$ gf servers
+$ gf meg-headers
+$ gf meg-headers | vim -
+#atau
+$ vimprev $(gf meg-headers)
+# di vim
+:%!grep -Hnri 'Server-Timing'
+$ find . -type f -name *.body | html-tool tags title | vim -
+# di vim
+:%!sort -u --versio-sort
+$ grep -Hnri '404 Forbidden'
+$ grep -Hnri '404 Forbidden' | wc
+$ gf servers
+$ gf servers | anew
+$ gf meg-headers | vim -
+# menggunakan tok
+$ find . -type f -exec cat {} \; | tok | vim -
+# di vim
+:%!sort -u --version-sort
+#untuk mengurutkannya unik
+#kemudian Anda dapat mengambil kata yang menarik di folder host untuk memeriksa dengan mudah di mana tempatnya dan memeriksa lebih lanjut dari sini.
+#Berurusan dengan file yang sangat besar
+#Urutkan file terlebih dahulu 
+$ cat urls | urlinteresting | vim -
+#di vim 
+:%!sort -u --version-sort
+#Untuk memeriksa subdomain takeover
+$  cat domains | while read domain; do host -t CNAME $domain; done | grep -i azure
+
+# sekarang fokus ke shopifykloud.com
+$ waybackurls shopifykloud.com | tee -a urls
+$ comb hosts ~/configfiles
+$ comb <(echo http://druid-druid-router-api-ingress-data-shopify.com)>
+$ comb <(echo http://druid-druid-router-api-ingress-data-shopify.com)> | fff -s 200 -o configfiles
+$ ffuf -w /usr/share/wordlists/seclists/Discovery/Web-content/raft-large-files.txt -u http://druid-druid-router-api-ingress-data-shopify.com/FUZZ
+$ waybackurls help.shopify.com | vim -
+$ curl -vs https://help.shopify.com/..api...
+# di vim
+:%!urinteristing
+:%!grep ?
+
+$ waybackurls --get-version 'https://help.shopify.com/index.php?'
+$ waybackurls help.shopify.com | vim -
+$ waybackurls --get-version 'https://help.shopify.com/assets/accordian.js'
+$ waybackurls help.shopify.com | vim -
+# di vim
+:%!grep '\.'
+$ waybackurls --get-version 'https://help.shopify.com/assets/site.js'
+$ waybackurls --get-version 'https://help.shopify.com/assets/site.js' | fff -s 200 -d 10 -k -o site-js-versions
+$ cd site-js-versions
+$ cd web.archive.org
+$ cd web
+# kita cari
+$ find . -type f -name *.body
+$ vimprev $(find . -type f -name *.body)
+$ gf sec
+$ gf aws-key
+$ gf url
+$ gf urls | vim -
+$ cd ..
+$ cd ..
+$ cd ..
+$ cp wilcards .scope
+$ vim .scope
+#ubah target jadi
+
+.*\.shopify\.com$
+.*\.shopifykloud\.com$
+^shopify\.com$
+^shopifykloud\.com$
+
+$ cd roots
+$ gf urls
+$ gf urls | inscope
+$ gf urls | inscope | vim -
+# di vim
+:%!urinteristing
+$ gf urls > ../all-urls
+$ cd ..
+$ vim all-urls
+$ cat all-urls | inscope > inscope-urls
+$ vim inscope-urls
+$ diff all-urls inscope-urls
+$ waybackurls shopifycdn.com | vim -
+
+# install webpste 
+export WEBPASTE_TOKEN=mytoken
+$ webpaste -p 8443
+$ webpaste -p 8443 | anew dorks
+$ cim dorks
+#di vim
+:%!inscope
+:%!grep -i shopify
+:%!grep -v google
+
+#buka github  cari repository di github
+# buat folder untuk menyimpan repo dari github
+$ mkdir repos
+$ cd repos
+$ webpaste -p 8443 | xargs -n1 -P10 ghclone
+# buka browser,extension webpaste dan klin gitub repos
+# ini akan mengkloning semua repository yang di temukan
+# buka folder hasil kloning
+$ cd gitub.com
+$ gf urls
+# lakukan git-dump di repository
+$ cd shopify
+$ cd shopfy-suth
+$ git-dump
+$ cd git-objects
+$ gf urls
+$ gf urls | vim -
+# di vim
+:%!grep -i shopify
+:%!urinteristing

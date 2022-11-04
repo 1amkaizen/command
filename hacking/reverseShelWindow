@@ -1,0 +1,11 @@
+## reverse shell ke window
+
+# buka github payloadAllTheThings
+# kita scroll dan buka reverse shell cheatshett dan pilih powershell
+# scroll dan cari tulisan "Fully interactive reverse shell on window"
+# copy script untuk attacker nya di komputer attacker
+# jika error tidak perlu pake ip addresnya
+
+# di komputer target
+# copy script untuk clientnya dari payloadAllTheThing
+

@@ -1,0 +1,23 @@
+#api key
+103144543q5B67JkdTP2OYRhaRendXPpboO9QVHNMM
+
+## simple
+curl "https://api.skrapp.io/api/v2/account" \
+              -H "X-Access-Key:103144543q5B67JkdTP2OYRhaRendXPpboO9QVHNMM" \
+              -H "Content-Type:application/json"
+
+## email finder 
+curl "https://api.skrapp.io/api/v2/find?firstName=John&lastName=Doe&domain=skrapp.io" \
+              -H "X-Access-Key:103144543q5B67JkdTP2OYRhaRendXPpboO9QVHNMM" \
+              -H "Content-Type:application/json"
+              
+
+## acount
+curl "https://api.skrapp.io/api/v2/account" \
+                    -H "X-Access-Key:103144543q5B67JkdTP2OYRhaRendXPpboO9QVHNMM" \
+                    -H "Content-Type:application/json"
+
+
+curl "https://api.skrapp.io/api/v2/list/:listId/leads?start=2500&size=100&kw=John" \
+                          -H "X-Access-Key:103144543q5B67JkdTP2OYRhaRendXPpboO9QVHNMM" \
+                          -H "Content-Type:application/json"

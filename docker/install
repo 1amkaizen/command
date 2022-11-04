@@ -1,0 +1,19 @@
+# install
+$ sudo apt install docker.io
+
+# running
+$ sudo systemctl enable docker --now
+
+# Jika Anda ingin menambahkan diri Anda sendiri ke grup buruh pelabuhan untuk digunakan dockertanpa sudo, diperlukan langkah tambahan:
+$ sudo usermod -aG docker $USER
+
+## Menginstal docker-ce di Kali Linux
+# repoditory
+$ printf '%s\n' "deb https://download.docker.com/linux/debian bullseye stable" |
+  sudo tee /etc/apt/sources.list.d/docker-ce.list
+
+# import key gpg
+$ curl -fsSL https://download.docker.com/linux/debian/gpg |
+  sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/docker-ce-archive-keyring.gpg
+
+

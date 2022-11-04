@@ -1,0 +1,17 @@
+## token acess
+ EAAJQBRLEG30BAJn0ZBEFy0qW4uUieV5per2MJ3kqKgpLNNzhNa3KVao2XvrpUpH23O9or5d5b7wYO3rGunJQo58ZAkGg2T6qRz60sg536sgoFyiCz46pIijVvZA1UC1bynFIhIJiSmbQ9eJ27j1CLfsHbOrOHsk3NRKkZCZCJogiZA3EQztDMqDZBxR8Pt5og7MOmZAf96TAeZBhOOdQbJKJ6asutvoVJQIoXd7rCchvL4TMFFtSwzdJK
+#
+# Client ID/ID APP
+ 650932673321853
+ # atau
+ PDXmwHdIJyuYvVJCB_FU9bE1VeU
+## APP Secret
+ec35ad288bcc4023d741074f43f4738e
+
+
+# get cert
+https://graph.facebook.com/certificates?fields=domains&access_token=EAAJQBRLEG30BAJn0ZBEFy0qW4uUieV5per2MJ3kqKgpLNNzhNa3KVao2XvrpUpH23O9or5d5b7wYO3rGunJQo58ZAkGg2T6qRz60sg536sgoFyiCz46pIijVvZA1UC1bynFIhIJiSmbQ9eJ27j1CLfsHbOrOHsk3NRKkZCZCJogiZA3EQztDMqDZBxR8Pt5og7MOmZAf96TAeZBhOOdQbJKJ6asutvoVJQIoXd7rCchvL4TMFFtSwzdJK&query=*.aa.com
+
+# facebook auth
+
+https://graph.facebook.com/oauth/access_token?client_id=650932673321853&client_secret=ec35ad288bcc4023d741074f43f4738e&grant_type=client_credentials

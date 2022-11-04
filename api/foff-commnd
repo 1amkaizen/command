@@ -1,0 +1,6 @@
+#api key
+da671a0677ab4aabb199a252e93c3489
+
+# curl
+curl -X GET "https://fofa.info/api/v1/search/all?email=1amkaiz3n@gmail.com&key=da671a0677ab4aabb199a252e93c3489&qbase64=dGl0bGU9ImJpbmci"
+

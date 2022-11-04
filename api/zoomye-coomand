@@ -1,0 +1,20 @@
+# api key
+3D95b544-A490-1ee81-8e44-7c83eb01614
+
+https://api.zoomeye.org/web/search?query=hostname:target.com&page=%d
+
+# cURL with API-KEY Example
+curl -X GET 'https://api.zoomeye.org/host/search?query=port:21%20city:beijing&page=1&facets=app,os' \
+-H "API-KEY:1AD12149-024c-8xxxx-3xxxx-4f054xxxx7f3"
+
+
+# Login verification
+curl -XPOST https://api.zoomeye.org/user/login -d
+'{
+    "username": "foo@bar.com",
+    "password": "foobar"
+}'
+
+# cURL with Authorization Example
+curl -X GET 'https://api.zoomeye.org/host/search?query=port:21%20city:beijing&page=1&facets=app,os' \
+-H "Authorization: JWT eyJhbGciOiJIUzI1NiIsInR5..."

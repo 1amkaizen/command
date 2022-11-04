@@ -1,0 +1,41 @@
+## Salah satu hal termudah yang dapat Anda lakukan untuk menghitung informasi adalah dengan melakukan banner grabbing .
+## Ini melibatkan upaya untuk membuka sesi dengan layanan dan membuat layanan mengidentifikasi dirinya sendiri. 
+##Anda dapat menggunakan telnet, Nmap, Netcat, dan alat lain untuk mengambil spanduk dari layanan seperti FTP, SSH, HTTP, SMTP, POP3, IMAP4, DNS, Telnet, Microsoft-DS, Microsoft netbios-ssn, dan banyak lagi. 
+## Banner Grabing ini dapat membantu Anda memfokuskan serangan pada layanan tertentu.
+
+# telnet <target IP> <port number> Setelah melakukan koneksi, tekan Ctrl+] untuk break, lalu enter quit.
+$ nc -vv <IP target> <nomor port>
+
+# contoh penggunaan permintaan HTTP GET untuk mendapatkan jenis dan versi server web di Linux:
+$ echo -en "GET / HTTP/1.0\n\n\n"|nc www.technoherder.com 80|grep Server
+
+# Skrip NSE ini mencoba mengambil spanduk dari setiap layanan yang dapat ditemukan di host:
+$ nmap -sV <IP target> -p <nomor port>
+$ nmap -sV --script=banner <target>
+ 
+
+## penggunanan dmitr
+$ dmitry -p -b [Alamat IPv4 dari semua host]
+$ dmitry -pb 
+
+# List of Banner Grabbing Tools
+Netcat
+telnet
+Netcraft
+http recon
+ID Serve
+Recon-ng
+Uniscan
+SpiderFoot
+httprint
+Nmap
+ScanLine
+X probe
+P0f
+Satori
+Thanos
+Bannergrab
+synscan
+Disco
+Winfingerprint
+NetworkMiner

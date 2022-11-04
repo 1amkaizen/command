@@ -1,0 +1,36 @@
+# sebelum melakukan serangan kit harus tahu dulu email dari target kita.
+# misalkan disini saya ada du email,email bos dan pegawai.
+
+### skenario
+# pak herupembudi mengirim email ke pegawainya dan menyuruh untuk mereview aplikasi,yang dimana aplikasi itu adallah trojan
+# di sini pegawai adalah target kita atau korbannya,dan herupembudi adalah kita yang menyamar agar si pegawai percaya bahwa emal itu dai herupembudi
+
+# email pengirim
+herupembudi@gmail.com
+
+# email penerima / target
+target@gmail.com
+
+
+# buat smtp server di
+https://sendinblue.com
+# dan signup
+# pilih tab Transictional yang isinya :
+SMTP server  : smtp-relay.sendinblue.com
+Port : 587
+Login : 1amkaiz3n@gmail.com
+Password : 3yP7CnUkI6g0s5Ac
+
+
+# di terminal
+$ sendemail -xu  1amkaiz3n@gmail.com -xp 3yP7CnUkI6g0s5Ac -s smtp-relay.sendinblue.com:587 -f herupembudi@gmail.com -t target@gmail.com -u "Review Aplikasi" -m "Tolong review apliksi ini : https://blablabla " -o message-header="From: Heru Pembudi <herupembudi@gmail.com>"
+
+### penjelasan
+-xu = Username
+-xp = Password
+-s = Server
+-f = Pengirim
+-t = Penerima
+-u = Judul
+-m = Body/Isi
+-o = Header

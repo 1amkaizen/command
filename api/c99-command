@@ -1,0 +1,228 @@
+# enable json tambahkan &json di belakang nya
+
+# subdomain
+https://api.c99.nl/subdomainfinder?key=<key>&domain=example.com
+# phone lookup
+https://api.c99.nl/phonelookup?key=<key>&number=+31637333793
+# skype resolver
+https://api.c99.nl/skyperesolver?key=<key>&username=echo123
+# ip 2 skype 
+https://api.c99.nl/ip2skype?key=<key>&ip=1.1.1.1
+# firewall WAFF setector
+https://api.c99.nl/firewalldetector?key=<key>&url=sucuri.net
+# multi port scanner 
+https://api.c99.nl/portscanner?key=<key>&host=1.1.1.1
+# single port scanner
+https://api.c99.nl/portscanner?key=<key>&host=1.1.1.1&port=80
+# ping
+https://api.c99.nl/ping?key=<key>&host=1.1.1.1
+# ip to host
+https://api.c99.nl/gethostname?key=<key>&host=1.1.1.1
+# adnamce DNS checker
+https://api.c99.nl/dnschecker?key=<key>&url=example.com&type=ns
+# domain checker
+https://api.c99.nl/domainchecker?key=<key>&domain=example.com
+
+#Subdomain Finder and CloudFlare Resolver
+#Performs an advanced subdomain scan to find most subdomains of the given domain.
+https://api.c99.nl/subdomainfinder?key=<key>&domain=example.com
+
+#Phone Lookup
+#Get more information about any phone number.
+
+https://api.c99.nl/phonelookup?key=<key>&number=+31637333793
+
+#Skype Resolver
+#Attempts to grab an IP address of a Skype account, results are not guaranteed. (This is completely legal as it uses publicly available records)
+
+https://api.c99.nl/skyperesolver?key=<key>&username=echo123
+
+#IP 2 Skype
+#Shows all Skype accounts with that specific IP.(This is completely legal as it uses publicly available records)
+https://api.c99.nl/ip2skype?key=<key>&ip=1.1.1.1
+
+#Firewall Technology (WAF) Detector
+#Scans to detect if a website is behind a firewall and determines what firewall it is.
+https://api.c99.nl/firewalldetector?key=<key>&url=sucuri.net
+NEW
+Multiple Port Scanner
+
+Scans all ports of given host.
+https://api.c99.nl/portscanner?key=<key>&host=1.1.1.1
+Single Port Scanner
+
+Scans a single port of given host.
+https://api.c99.nl/portscanner?key=<key>&host=1.1.1.1&port=80
+Ping
+
+Pings a host 4 times and shows the result.
+https://api.c99.nl/ping?key=<key>&host=1.1.1.1
+IP to Host
+
+Gets host of given IP address.
+https://api.c99.nl/gethostname?key=<key>&host=1.1.1.1
+Advanced DNS Checker
+
+Performs an advanced check on the specific URL. Parameter &server=[countrycode] is optional. If left empty, all servers will be used. Possible check types: a, aaaa, cname, mx, ns, soa, txt
+https://api.c99.nl/dnschecker?key=<key>&url=example.com&type=ns
+NEW
+Host to IP
+
+Gets server IP of given host.
+https://api.c99.nl/dnsresolver?key=<key>&host=example.com&server=US
+Domain Checker
+
+Checks whether a domain is available or not, no matter what extension.
+https://api.c99.nl/domainchecker?key=<key>&domain=example.com
+Domain History Check
+
+Checks available IP history of a domain with dates.
+https://api.c99.nl/domainhistory?key=<key>&domain=9gag.com
+IP 2 Domains
+
+Attempts to find websites hosted on the specific IP address.
+https://api.c99.nl/ip2domains?key=<key>&ip=1.1.1.1
+Alexa Rank Checker
+
+Grab the latest Alexa Rank information of any website, including backlinks and top country.
+https://api.c99.nl/alexarank?key=<key>&url=example.com
+Whois Checker
+
+Whois check on a domain to see who the domain owner is.
+https://api.c99.nl/whois?key=<key>&domain=example.com
+Screenshot Tool
+
+Creates a screenshot of any website/url you want.
+https://api.c99.nl/createscreenshot?key=<key>&url=https://example.com/
+GeoIP
+
+Locates the given host/ip address.
+https://api.c99.nl/geoip?key=<key>&host=1.1.1.1
+Website Up or Down Checker
+
+Checks if a host is up or down.
+https://api.c99.nl/upordown?key=<key>&host=example.com
+Site/URL Reputation Checker
+
+Checks whether a specific site/url is suspicious and might contain malware, phishing or other potential harmful software.
+https://api.c99.nl/reputationchecker?key=<key>&url=https://www.example.com/
+NEW
+Get Website Headers
+
+Gets the headers of a website.
+https://api.c99.nl/getheaders?key=<key>&host=example.com
+Link Backup
+
+Makes an online backup of a link.
+https://api.c99.nl/linkbackup?key=<key>&url=www.example.com
+URL Shortener
+
+Shorts every long URL.
+https://api.c99.nl/urlshortener?key=<key>&url=example.com
+Random String Picker
+
+Gets random string from given text file.
+https://api.c99.nl/randomstringpicker?key=<key>&textfile=http://example.com/accounts.txt
+Dictionary
+
+Gets the definition of any word.
+https://api.c99.nl/dictionary?key=<key>&word=car
+Image Reverse / Define Picture
+
+Reverses the image/picture given and determines what's on it.
+https://api.c99.nl/definepicture?key=<key>&url=https://i.imgur.com/uTzPCuv.png
+NEW
+Synonym Finder
+
+Gets the alternative words/synonyms for any legitimate english word you fill in.
+https://api.c99.nl/synonym?key=<key>&word=car
+Email Validator
+
+Checks if given up e-mail exists.
+https://api.c99.nl/emailvalidator?key=<key>&email=example@outlook.com
+Disposable Mail Check
+
+Checks if given up e-mail is disposable/temporarily or not.
+https://api.c99.nl/disposablemailchecker?key=<key>&email=example@yopmail.com
+IP Validator
+
+Checks if IP address format is valid.
+https://api.c99.nl/ipvalidator?key=<key>&ip=1.1.1.1
+TOR Checker
+
+Checks whether an IP is from a TOR network or not.
+https://api.c99.nl/torchecker?key=<key>&ip=1.1.1.1
+Translator
+
+Translates your text (autodetected) to any language.
+https://api.c99.nl/translate?key=<key>&text=Hello World&tolanguage=EN
+Random Info Generator
+
+Generates random name address etc. (genders: male/female/all).
+https://api.c99.nl/randomperson?key=<key>&gender=all
+Youtube Video Details
+
+Gets all details of a specific YouTube video.
+https://api.c99.nl/youtubedetails?key=<key>&videoid=Urdlvw0SSEc
+Youtube to MP3
+
+Converts any song up to 10 minutes to MP3.
+https://api.c99.nl/youtubemp3?key=<key>&videoid=Urdlvw0SSEc
+IP Logger
+
+Creates you various links which you can send to anyone to log their IP.
+https://api.c99.nl/iplogger?key=<key>&action=viewloggers
+Bitcoin Balance Checker
+
+Checks the current balance of any Bitcoin address.
+https://api.c99.nl/bitcoinbalance?key=<key>&address=1C99NLhJ5NDFC6R6Uw2pgBUrJkQJEBDTDc
+Ethereum Balance Checker
+
+Checks the current balance of any Ethereum address.
+https://api.c99.nl/ethereumbalance?key=<key>&address=0xB0Cda30e4587d1cE1cA9d81D3298022b0fC033C3
+Currency Converter
+
+Converts normal and cryptocurrencies to any other currency.
+https://api.c99.nl/currency?key=<key>&amount=123&from=USD&to=EUR
+Currency Rates
+
+Shows the rate of every currency in the world based on the unit price of the given source.
+https://api.c99.nl/currencyrates?key=<key>&source=USD
+Weather Checker
+
+Checks the weather of every city or postal code you give up. Change &unit= to F for Fahrenheit and C for Celcius.
+https://api.c99.nl/weather?key=<key>&location=Miami
+QR Code Generator
+
+Generates a QR code and uploads it to imgur, useful to quickly share a piece of text or URL.
+https://api.c99.nl/qrgenerator?key=<key>&string=Hello World&size=150
+Text Parser
+
+Extracts text from any image. It works best on English text.
+https://api.c99.nl/textparser?key=<key>&url=https://i.imgur.com/KUHvduT.png
+Proxy Detector
+
+Detects whether an IP address is a proxy/vpn or not. High accuracy!
+https://api.c99.nl/proxydetector?key=<key>&ip=104.24.125.100
+Password Generator
+
+Generates a random password based on the given configuration. (Customlist is optional)
+https://api.c99.nl/passwordgenerator?key=<key>&length=10&include=numbers,letters,chars&customlist=abcdefgh
+Random number generator
+
+Generates a random number based on the given length or between parameter. (You can only use length or between, not both)
+https://api.c99.nl/randomnumber?key=<key>&length=10&between=1,100
+License Key Generator
+
+Generates a randomized license using given template. Wildcards are: * ? and %. * is alphabetic, % is numeric, ? is mixed.
+https://api.c99.nl/licensekeygenerator?key=<key>&template=?????-?????-?????-?????&amount=1
+NEW
+Either or
+
+Provides a random "would you rather" question/dilemma, giving two hard options. (We recommend using JSON)
+https://api.c99.nl/eitheror?key=<key>
+NEW
+GIF Finder
+
+Gives you a list of animated GIF's based on the given keyword.
+
