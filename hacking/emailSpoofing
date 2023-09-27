@@ -22,8 +22,12 @@ Login : 1amkaiz3n@gmail.com
 Password : 3yP7CnUkI6g0s5Ac
 
 
-# di terminal
+### di terminal
+# brevo.com
 $ sendemail -xu  1amkaiz3n@gmail.com -xp 3yP7CnUkI6g0s5Ac -s smtp-relay.brevo.com:587 -f herupembudi@gmail.com -t target@gmail.com -u "Review Aplikasi" -m "Tolong review apliksi ini : https://blablabla " -o message-header="From: Heru Pembudi <herupembudi@gmail.com>"
+# mailjet.com
+$ sendemail -xu  1amkaiz3n@gmail.com -xp Arifin200### -s in-v3.mailjet.com:465 -f herupembudi@gmail.com -t kaizen100801@gmail.com -u "Review Aplikasi" -m "Tolong review apliksi ini : https://blablabla " -o message-header="From: Heru Pembudi <herupembudi@gmail.com>"
+
 
 ### penjelasan
 -xu = Username
